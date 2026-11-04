@@ -1,0 +1,8 @@
+import { QrCode, ShieldCheck } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
+
+export interface CredencialCardProps { id: string; name: string; group: string; section: string; bloodType: string; status: 'ACTIVO' | 'PENDIENTE' | 'VENCIDO' | 'BAJA'; }
+export function CredencialCard({ id, name, group, section, bloodType, status }: CredencialCardProps) {
+  const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'}/api/credencial/verify?code=${encodeURIComponent(id)}`;
+  return <article className="relative overflow-hidden rounded-2xl bg-ink p-6 text-white shadow-soft"><div className="relative flex items-start justify-between"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-citrus">Asociación Nacional</div><div className="mt-1 font-display text-xl font-bold">SCOUT ANSI</div></div><ShieldCheck className="text-citrus" /></div><div className="relative mt-10 flex items-end justify-between gap-4"><div><div className="text-2xl font-bold">{name}</div><div className="mt-1 text-sm text-[#bbd0be]">{section} · {group}</div><div className="mt-4 flex gap-4 text-[10px] uppercase tracking-[.16em] text-[#8ba18f]"><span>Sangre {bloodType}</span><span className="text-citrus">{status}</span></div></div><div className="rounded-lg bg-white p-2" title="Validar credencial"><QRCodeSVG value={verificationUrl} size={72} includeMargin /></div></div><div className="mt-4 flex items-center gap-1 text-[10px] text-[#8ba18f]"><QrCode size={12} />Código verificable · {id}</div></article>;
+}

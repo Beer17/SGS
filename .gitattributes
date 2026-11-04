@@ -1,0 +1,6 @@
+# Normaliza saltos de línea: LF en el repo, conversión automática en Windows
+* text=auto
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary

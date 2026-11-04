@@ -1,0 +1,446 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  NACIONAL
+  PROVINCIA
+  GRUPO
+  SECCION
+  MIEMBRO_TUTOR
+}
+
+enum Seccion {
+  MANADA
+  TROPA
+  COMUNIDAD
+  CLAN
+  JEFATURA
+}
+
+enum EstatusRegistro {
+  ACTIVO
+  PENDIENTE
+  VENCIDO
+  BAJA
+}
+
+enum TipoEvento {
+  NACIONAL
+  REGIONAL
+  GRUPO
+  CAMPAMENTO
+  REUNION
+  CAPACITACION
+}
+
+enum TipoMovimiento {
+  INGRESO
+  EGRESO
+}
+
+enum TipoCuota {
+  MEMBRESIA
+  EVENTO
+  OTRO
+}
+
+enum EstatusCuota {
+  PAGADA
+  PENDIENTE
+  VENCIDA
+  EXENTA
+}
+
+enum EstadoItem {
+  DISPONIBLE
+  PRESTADO
+  MANTENIMIENTO
+  DANADO
+  BAJA
+}
+
+enum TipoNotificacion {
+  CUOTA_VENCIMIENTO
+  EVENTO_RECORDATORIO
+  PROGRESION_APROBADA
+  SISTEMA
+  MENSAJE
+}
+
+// ─────────────────────────────────────────────
+// USUARIOS Y AUTENTICACIÓN
+// ─────────────────────────────────────────────
+
+model User {
+  id                    String            @id @default(uuid())
+  email                 String            @unique
+  passwordHash          String
+  role                  Role
+  emailVerified         Boolean           @default(false)
+  activo                Boolean           @default(true)
+  lastLogin             DateTime?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  scoutProfile          ScoutProfile?
+  progresionesAprobadas ProgresionScout[] @relation("Aprobador")
+  cuotasRegistradas     Cuota[]           @relation("RegistradorCuota")
+  movimientosRegistrados MovimientoFinanciero[] @relation("RegistradorMovimiento")
+  notificaciones        Notificacion[]    @relation("DestinatarioNotificacion")
+  auditLogs             AuditLog[]
+
+  @@index([email])
+}
+
+// ─────────────────────────────────────────────
+// ESTRUCTURA ORGANIZACIONAL
+// ─────────────────────────────────────────────
+
+model Provincia {
+  id       String        @id @default(uuid())
+  nombre   String
+  region   String
+  grupos   GrupoScout[]
+  scouts   ScoutProfile[]
+
+  @@index([nombre])
+}
+
+model GrupoScout {
+  id          String               @id @default(uuid())
+  numeroGrupo Int
+  nombre      String
+  provinciaId String
+  provincia   Provincia            @relation(fields: [provinciaId], references: [id])
+  scouts      ScoutProfile[]
+  eventos     Evento[]
+  inventario  ItemInventario[]
+  movimientos MovimientoFinanciero[]
+
+  @@unique([provinciaId, numeroGrupo])
+  @@index([nombre])
+}
+
+// ─────────────────────────────────────────────
+// MIEMBROS
+// ─────────────────────────────────────────────
+
+model ScoutProfile {
+  id                  String            @id @default(uuid())
+  userId              String?           @unique
+  nombres             String
+  apellidos           String
+  curp                String?           @unique
+  fechaNacimiento     DateTime
+  telefono            String?
+  direccion           String?
+  foto                String?           // URL/path de foto de perfil
+  seccion             Seccion
+  grupoId             String
+  provinciaId         String
+  estatusRegistro     EstatusRegistro   @default(PENDIENTE)
+  codigoCredencialQR  String            @unique @default(uuid())
+  cicloActivo         String?           // ej. "2024-2025"
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+
+  user                User?             @relation(fields: [userId], references: [id])
+  grupo               GrupoScout        @relation(fields: [grupoId], references: [id])
+  provincia           Provincia         @relation(fields: [provinciaId], references: [id])
+  fichaMedica         FichaMedica?
+  progresiones        ProgresionScout[]
+  insigniasObtenidas  InsigniaObtenida[]
+  asistencias         Asistencia[]
+  cuotas              Cuota[]
+  inscripciones       InscripcionEvento[]
+
+  @@index([curp])
+  @@index([codigoCredencialQR])
+  @@index([grupoId, seccion])
+  @@index([estatusRegistro])
+  @@index([apellidos, nombres])
+}
+
+model FichaMedica {
+  id                        String       @id @default(uuid())
+  scoutProfileId            String       @unique
+  tipoSangre                String?
+  alergias                  String?
+  padecimientos             String?
+  medicamentos              String?
+  tratamientoActual         String?
+  restriccionesActividad    String?
+  seguMedico                String?      // número de póliza de seguro médico
+  nombreMedico              String?
+  telefonoMedico            String?
+  contactoEmergenciaNombre  String
+  contactoEmergenciaTel     String
+  contactoEmergenciaParentesco String?
+  contactoEmergencia2Nombre String?
+  contactoEmergencia2Tel    String?
+  autorizacionActividades   Boolean      @default(false)
+  updatedAt                 DateTime     @updatedAt
+  scoutProfile              ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────
+// PROGRESIÓN E INSIGNIAS
+// ─────────────────────────────────────────────
+
+model ProgresionScout {
+  id              String       @id @default(uuid())
+  scoutProfileId  String
+  seccion         Seccion
+  etapaNombre     String
+  descripcion     String?
+  completada      Boolean      @default(false)
+  aprobadaPorId   String?
+  fechaAprobacion DateTime?
+  evidencia       String?      // URL de foto/documento
+  createdAt       DateTime     @default(now())
+
+  scoutProfile    ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
+  aprobadaPor     User?        @relation("Aprobador", fields: [aprobadaPorId], references: [id])
+
+  @@index([scoutProfileId, completada])
+  @@index([seccion, etapaNombre])
+}
+
+model Insignia {
+  id          String             @id @default(uuid())
+  nombre      String
+  descripcion String?
+  seccion     Seccion?           // null = aplica a todas
+  categoria   String?            // ej. "Destreza", "Servicio", "Aventura"
+  imagen      String?            // URL de la imagen de la insignia
+  createdAt   DateTime           @default(now())
+
+  obtenidas   InsigniaObtenida[]
+
+  @@index([seccion])
+}
+
+model InsigniaObtenida {
+  id             String       @id @default(uuid())
+  scoutProfileId String
+  insigniaId     String
+  fechaObtencion DateTime     @default(now())
+  otorgadaPorId  String?
+  observaciones  String?
+
+  scoutProfile   ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
+  insignia       Insignia     @relation(fields: [insigniaId], references: [id])
+
+  @@unique([scoutProfileId, insigniaId])
+  @@index([scoutProfileId])
+}
+
+// ─────────────────────────────────────────────
+// EVENTOS Y ASISTENCIA
+// ─────────────────────────────────────────────
+
+model Evento {
+  id              String              @id @default(uuid())
+  nombre          String
+  descripcion     String?
+  tipo            TipoEvento
+  fechaInicio     DateTime
+  fechaFin        DateTime
+  lugar           String?
+  cupoMaximo      Int?
+  requiereAutorizacion Boolean        @default(false)
+  cancelado       Boolean             @default(false)
+  grupoId         String?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  grupo           GrupoScout?         @relation(fields: [grupoId], references: [id])
+  asistencias     Asistencia[]
+  inscripciones   InscripcionEvento[]
+  logistica       LogisticaEvento?
+
+  @@index([fechaInicio, fechaFin])
+  @@index([tipo])
+  @@index([grupoId])
+}
+
+model InscripcionEvento {
+  id              String       @id @default(uuid())
+  eventoId        String
+  scoutProfileId  String
+  fechaInscripcion DateTime   @default(now())
+  autorizacionParental Boolean @default(false)
+  observaciones   String?
+  pagoCuota       Boolean      @default(false)
+
+  evento          Evento       @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  scoutProfile    ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([eventoId, scoutProfileId])
+  @@index([eventoId])
+}
+
+model LogisticaEvento {
+  id              String   @id @default(uuid())
+  eventoId        String   @unique
+  transporteInfo  String?
+  lugarCampamento String?
+  equipoRequerido String?  // JSON array de ítems requeridos
+  presupuesto     Decimal? @db.Decimal(10, 2)
+  notas           String?
+
+  evento          Evento   @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+}
+
+model Asistencia {
+  id                  String       @id @default(uuid())
+  eventoId            String
+  scoutProfileId      String
+  horaEscaneo         DateTime     @default(now())
+  sincronizadoOffline Boolean      @default(false)
+  registradoPorId     String?
+
+  evento              Evento       @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  scoutProfile        ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([eventoId, scoutProfileId])
+  @@index([eventoId, horaEscaneo])
+  @@index([scoutProfileId])
+}
+
+// ─────────────────────────────────────────────
+// MÓDULO FINANCIERO
+// ─────────────────────────────────────────────
+
+model Cuota {
+  id              String       @id @default(uuid())
+  scoutProfileId  String
+  tipo            TipoCuota
+  concepto        String
+  monto           Decimal      @db.Decimal(10, 2)
+  ciclo           String       // ej. "2024-2025"
+  estatus         EstatusCuota @default(PENDIENTE)
+  fechaVencimiento DateTime?
+  fechaPago       DateTime?
+  comprobante     String?      // URL/path del comprobante
+  registradoPorId String?
+  notas           String?
+  createdAt       DateTime     @default(now())
+
+  scoutProfile    ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
+  registradoPor   User?        @relation("RegistradorCuota", fields: [registradoPorId], references: [id])
+
+  @@index([scoutProfileId, ciclo])
+  @@index([estatus])
+  @@index([fechaVencimiento])
+}
+
+model MovimientoFinanciero {
+  id              String         @id @default(uuid())
+  grupoId         String
+  tipo            TipoMovimiento
+  concepto        String
+  monto           Decimal        @db.Decimal(10, 2)
+  fecha           DateTime       @default(now())
+  categoria       String?        // ej. "Materiales", "Transporte", "Campamento"
+  comprobante     String?
+  registradoPorId String?
+  notas           String?
+  createdAt       DateTime       @default(now())
+
+  grupo           GrupoScout     @relation(fields: [grupoId], references: [id])
+  registradoPor   User?          @relation("RegistradorMovimiento", fields: [registradoPorId], references: [id])
+
+  @@index([grupoId, fecha])
+  @@index([tipo, fecha])
+}
+
+// ─────────────────────────────────────────────
+// INVENTARIO
+// ─────────────────────────────────────────────
+
+model ItemInventario {
+  id          String              @id @default(uuid())
+  grupoId     String
+  nombre      String
+  descripcion String?
+  categoria   String?             // ej. "Camping", "Cocina", "Primeros Auxilios"
+  cantidad    Int                 @default(1)
+  estado      EstadoItem          @default(DISPONIBLE)
+  ubicacion   String?
+  valorUnitario Decimal?          @db.Decimal(10, 2)
+  fechaAdquisicion DateTime?
+  notas       String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  grupo       GrupoScout          @relation(fields: [grupoId], references: [id])
+  prestamos   PrestamoInventario[]
+
+  @@index([grupoId, estado])
+  @@index([categoria])
+}
+
+model PrestamoInventario {
+  id              String     @id @default(uuid())
+  itemId          String
+  prestatarioNombre String
+  prestatarioId   String?    // scoutProfileId opcional
+  fechaPrestamo   DateTime   @default(now())
+  fechaDevolucion DateTime?
+  devuelto        Boolean    @default(false)
+  observaciones   String?
+
+  item            ItemInventario @relation(fields: [itemId], references: [id])
+
+  @@index([itemId, devuelto])
+}
+
+// ─────────────────────────────────────────────
+// NOTIFICACIONES Y AUDITORÍA
+// ─────────────────────────────────────────────
+
+model Notificacion {
+  id              String           @id @default(uuid())
+  destinatarioId  String
+  tipo            TipoNotificacion
+  titulo          String
+  mensaje         String
+  leida           Boolean          @default(false)
+  accionUrl       String?          // ruta interna a la que debe llevar
+  dedupeKey       String?          @unique // evita duplicar recordatorios automáticos
+  createdAt       DateTime         @default(now())
+
+  destinatario    User             @relation("DestinatarioNotificacion", fields: [destinatarioId], references: [id], onDelete: Cascade)
+
+  @@index([destinatarioId, leida])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String
+  accion      String   // ej. "EDITAR_FICHA_MEDICA", "APROBAR_PROGRESION"
+  entidad     String   // ej. "FichaMedica", "ScoutProfile"
+  entidadId   String
+  datosAntes  Json?
+  datosDespues Json?
+  ip          String?
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([entidad, entidadId])
+}

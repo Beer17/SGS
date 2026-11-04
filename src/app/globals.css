@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --font-manrope: 'Trebuchet MS'; --font-space-grotesk: 'Trebuchet MS'; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f7f8f3; color: #17241f; font-family: var(--font-manrope), sans-serif; }
+button, input { font: inherit; }
+::selection { background: #f2c94c; color: #17241f; }
