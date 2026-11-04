@@ -27,6 +27,7 @@ interface ScoutApiResponse {
     grupoId: string;
     estatusRegistro: string;
     cicloActivo: string | null;
+    rama: string | null;
   };
 }
 
@@ -47,6 +48,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
   const [grupoId, setGrupoId]     = useState('');
   const [cicloActivo, setCicloActivo] = useState('2026-2027');
   const [estatusRegistro, setEstatusRegistro] = useState('PENDIENTE');
+  const [rama, setRama]           = useState('');
 
   useEffect(() => {
     fetch('/api/grupos')
@@ -73,6 +75,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
         setGrupoId(data.grupoId);
         setCicloActivo(data.cicloActivo ?? '');
         setEstatusRegistro(data.estatusRegistro);
+        setRama(data.rama ?? '');
       })
       .catch(() => setError('No se pudo cargar el expediente del miembro.'))
       .finally(() => setLoadingData(false));
@@ -97,6 +100,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
       grupoId: grupoSeleccionado.id,
       provinciaId: grupoSeleccionado.provinciaId,
       cicloActivo: cicloActivo.trim() || undefined,
+      rama: rama === '' ? null : rama,
       ...(mode === 'edit' ? { estatusRegistro } : {}),
     };
 
@@ -163,7 +167,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm font-bold">
           Sección *
-          <select required value={seccion} onChange={(e) => setSeccion(e.target.value)}
+          <select required value={seccion} onChange={(e) => { setSeccion(e.target.value); if (e.target.value !== 'TROPA') setRama(''); }}
             className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
             {SECTIONS.map((s) => <option key={s} value={s}>{SECTION_LABELS[s]}</option>)}
           </select>
@@ -181,6 +185,17 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
           </select>
         </label>
       </div>
+
+      {seccion === 'TROPA' && (
+        <label className="block text-sm font-bold">
+          Rama de la Tropa (opcional)
+          <select value={rama} onChange={(e) => setRama(e.target.value)}
+            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            <option value="">Tropa regular (11–14 años)</option>
+            <option value="COMUNIDAD">Comunidad (15–17 años)</option>
+          </select>
+        </label>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm font-bold">

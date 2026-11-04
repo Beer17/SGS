@@ -25,13 +25,13 @@ Producción local: `npm run build && npm run start` (o `npm run start -- -p 3100
 
 ## Cuentas de demostración
 
-| Cuenta | Rol | Contraseña |
-|---|---|---|
-| `admin@gmail.com` | Administrador | `admin1234` |
-| `nacional@sisas.ansi` | Nacional | `Nacional2026!` |
-| `jefe@sisas.ansi` | Jefe de grupo | `Jefe2026!` |
-| `scouter@sisas.ansi` | Scouter | `Scouter2026!` |
-| `tutor@sisas.ansi` | Padre/Tutor (vinculado a 1 expediente) | `Tutor2026!` |
+| Cuenta                | Rol                                    | Contraseña      |
+| --------------------- | -------------------------------------- | --------------- |
+| `admin@gmail.com`     | Administrador                          | `admin1234`     |
+| `nacional@sisas.ansi` | Nacional                               | `Nacional2026!` |
+| `jefe@sisas.ansi`     | Jefe de grupo                          | `Jefe2026!`     |
+| `scouter@sisas.ansi`  | Scouter                                | `Scouter2026!`  |
+| `tutor@sisas.ansi`    | Padre/Tutor (vinculado a 1 expediente) | `Tutor2026!`    |
 
 Cambia o elimina estas cuentas antes de exponer el sistema.
 
@@ -65,3 +65,5 @@ Datos de demostración 100% ficticios. CURP enmascarada fuera del expediente; fi
 ## Licencia / uso
 
 Proyecto interno de ANSI. Antes de un piloto real: cambiar contraseñas, rotar `AUTH_SECRET` y revisar avisos de privacidad (ver DEPLOY-AZURE.md).
+
+Propiedad de miguel beer

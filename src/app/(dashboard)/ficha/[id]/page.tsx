@@ -8,7 +8,8 @@ import { getSession, canViewMedical, canManageMembers, canOperate } from '@/lib/
 import { db } from '@/lib/db';
 import { audit, maskCurp } from '@/lib/api';
 import { calcularEdad, estatusRegistroColor, formatDate, getInitials } from '@/lib/utils';
-import { SECTION_LABELS } from '@/types';
+import { SECTION_LABELS, RAMA_LABELS } from '@/types';
+import type { RamaTropa } from '@/types';
 import { PRINT_CSS } from '@/components/PrintCss';
 import { MemberActions } from '@/components/members/MemberActions';
 import { PrintButton } from '@/components/members/PrintButton';
@@ -99,6 +100,11 @@ export default async function FichaPage({ params }: { params: { id: string } }) 
             <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
               <span className="rounded-full bg-fern px-3 py-1 font-bold text-moss">{SECTION_LABELS[scout.seccion]}</span>
               <span className="rounded-full bg-paper px-3 py-1 font-bold text-[#5c6f63]">Grupo {scout.grupo.numeroGrupo} · {scout.grupo.nombre}</span>
+              {scout.rama && (
+                <span className="rounded-full bg-[#e8f0ff] px-3 py-1 font-bold text-[#3a5aa8]">
+                  Rama {RAMA_LABELS[scout.rama as RamaTropa] ?? scout.rama}
+                </span>
+              )}
               <span className={`rounded-full px-3 py-1 font-bold ${estatusRegistroColor(scout.estatusRegistro)}`}>{scout.estatusRegistro}</span>
               {scout.cuotas.length > 0 && (
                 <span className="rounded-full bg-[#fdecea] px-3 py-1 font-bold text-clay">{scout.cuotas.length} cuota(s) pendiente(s)</span>
