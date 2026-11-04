@@ -12,7 +12,7 @@ const GenerarSchema = z.object({
   monto: z.number().positive(),
   tipo: z.enum(['MEMBRESIA', 'EVENTO', 'OTRO']).default('MEMBRESIA'),
   grupoId: z.string().uuid().optional(),
-  seccion: z.enum(['MANADA', 'TROPA', 'COMUNIDAD', 'CLAN', 'JEFATURA']).optional(),
+  seccion: z.enum(['MANADA_GACELAS', 'MANADA_LOBATOS', 'TROPA', 'CLAN', 'JEFATURA']).optional(),
   diasVencimiento: z.number().int().positive().max(365).default(30),
 });
 

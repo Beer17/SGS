@@ -9,7 +9,7 @@ import { audit } from '@/lib/api';
 import { parseCsv, rowToObject } from '@/lib/csv';
 
 const MAX_ROWS = 500;
-const SECCIONES = ['MANADA', 'TROPA', 'COMUNIDAD', 'CLAN', 'JEFATURA'] as const;
+const SECCIONES = ['MANADA_GACELAS', 'MANADA_LOBATOS', 'TROPA', 'CLAN', 'JEFATURA'] as const;
 
 const FilaSchema = z.object({
   nombres: z.string().min(1).max(100),

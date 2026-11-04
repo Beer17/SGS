@@ -41,13 +41,14 @@ function curpFalsa(fechaNac: Date, sexo: 'H' | 'M'): string {
   return `${L()}${L()}${L()}${L()}${yy}${mm}${dd}${sexo}${L()}${L()}${L()}${L()}${L()}${L()}0${int(1, 9)}`;
 }
 
-function fechaNacParaSeccion(seccion: 'MANADA' | 'TROPA' | 'COMUNIDAD' | 'CLAN' | 'JEFATURA'): Date {
-  const rangos: Record<typeof seccion, [number, number]> = {
-    MANADA: [7, 10],
-    TROPA: [11, 14],
-    COMUNIDAD: [15, 17],
-    CLAN: [18, 21],
-    JEFATURA: [24, 55],
+type SeccionSeed = 'MANADA_GACELAS' | 'MANADA_LOBATOS' | 'TROPA' | 'CLAN';
+
+function fechaNacParaSeccion(seccion: SeccionSeed, rama?: 'COMUNIDAD'): Date {
+  const rangos: Record<SeccionSeed, [number, number]> = {
+    MANADA_GACELAS: [6, 11],
+    MANADA_LOBATOS: [6, 11],
+    TROPA: rama === 'COMUNIDAD' ? [15, 17] : [11, 14],
+    CLAN: [17, 24],
   };
   const [min, max] = rangos[seccion];
   const edad = int(min, max);
@@ -110,7 +111,6 @@ async function main() {
   ]);
 
   // ─── Miembros ───────────────────────────────────────────────────────────────
-  const secciones: Array<'MANADA' | 'TROPA' | 'COMUNIDAD' | 'CLAN'> = ['MANADA', 'TROPA', 'COMUNIDAD', 'CLAN'];
   const sangre = ['O+', 'O-', 'A+', 'A-', 'B+', 'AB+'];
   const parentescos = ['Madre', 'Padre', 'Tutor', 'Abuela', 'Tío'];
   const alergiasPool = ['Penicilina', 'Mariscos', 'Polen', 'Lactosa', 'Ninguna conocida'];
@@ -121,20 +121,23 @@ async function main() {
 
   for (const grupo of grupos) {
     const provinciaId = provinciaDeGrupo.get(grupo.id)!;
-    // 11 miembros por grupo: 4 MANADA, 3 TROPA, 2 COMUNIDAD, 2 CLAN
-    const plan: Array<'MANADA' | 'TROPA' | 'COMUNIDAD' | 'CLAN'> = [
-      'MANADA', 'MANADA', 'MANADA', 'MANADA',
+    // 11 miembros por grupo: 3 GACELAS, 3 LOBATOS, 3 TROPA (la 3.ª es rama COMUNIDAD 15-17), 2 CLAN
+    const plan: SeccionSeed[] = [
+      'MANADA_GACELAS', 'MANADA_GACELAS', 'MANADA_GACELAS',
+      'MANADA_LOBATOS', 'MANADA_LOBATOS', 'MANADA_LOBATOS',
       'TROPA', 'TROPA', 'TROPA',
-      'COMUNIDAD', 'COMUNIDAD',
       'CLAN', 'CLAN',
     ];
+    let tropaCount = 0;
 
     for (const seccion of plan) {
       contador += 1;
+      tropaCount += seccion === 'TROPA' ? 1 : 0;
+      const rama = seccion === 'TROPA' && tropaCount === 3 ? 'COMUNIDAD' as const : undefined;
       const esMujer = rand() < 0.42;
       const nombres = esMujer ? pick(NOMBRES_M) : pick(NOMBRES_H);
       const apellidos = `${pick(APELLIDOS)} ${pick(APELLIDOS)}`;
-      const fechaNacimiento = fechaNacParaSeccion(seccion);
+      const fechaNacimiento = fechaNacParaSeccion(seccion, rama);
       // ~90% activos, algunos pendientes/vencidos para que la demo luzca real
       const estatusRegistro =
         contador % 17 === 0 ? 'VENCIDO' : contador % 11 === 0 ? 'PENDIENTE' : 'ACTIVO';
@@ -148,6 +151,7 @@ async function main() {
           telefono: `55${int(1000, 9999)}${int(1000, 9999)}`,
           direccion: `Calle ${pick(['Hidalgo', 'Juárez', 'Morelos', 'Zaragoza', 'Allende'])} #${int(10, 400)}, ${pick(['Centro', 'La Luna', 'Las Flores'])}`,
           seccion,
+          rama,
           grupoId: grupo.id,
           provinciaId,
           estatusRegistro,
@@ -180,12 +184,12 @@ async function main() {
     await db.scoutProfile.update({ where: { id: hijoTutor.id }, data: { userId: tutor.id } });
   }
 
-  // ─── Progresión ─────────────────────────────────────────────────────────────
+  // ─── Progresión (nombres oficiales del Plan de Adelanto ANSI) ────────────────
   const etapasPorSeccion: Record<string, string[]> = {
-    MANADA: ['Integración a la Meute', 'Naturaleza y rastros', 'Servicio al bar', 'Especialidad de Naturaleza'],
-    TROPA: ['Integración a la Tropa', 'Vida al aire libre', 'Servicio a la comunidad', 'Especialidad de Aventura', 'Liderazgo'],
-    COMUNIDAD: ['Integración a la Comunidad', 'Servicio especializado', 'Aventuras de ruta', 'Liderazgo juvenil'],
-    CLAN: ['Integración al Clan', 'Formulación de proyecto', 'Servicio a la comunidad', 'Liderazgo y legado'],
+    MANADA_GACELAS: ['Shirma', 'Basvi', 'Otami', 'Pranam'],
+    MANADA_LOBATOS: ['Seeonee', 'Flor Roja', 'Lobo Explorador', 'Lobo Cazador'],
+    TROPA: ['Tercera Clase', 'Segunda Clase', 'Primera Clase'],
+    CLAN: ['Ser', 'Naturaleza', 'Proyección'],
   };
   for (const m of miembros) {
     const etapas = etapasPorSeccion[m.seccion] ?? [];
@@ -194,9 +198,9 @@ async function main() {
       await db.progresionScout.create({
         data: {
           scoutProfileId: m.id,
-          seccion: m.seccion as 'MANADA' | 'TROPA' | 'COMUNIDAD' | 'CLAN',
+          seccion: m.seccion as SeccionSeed,
           etapaNombre: etapas[i],
-          descripcion: `Etapa ${i + 1} del programa de ${m.seccion.toLowerCase()}.`,
+          descripcion: `Etapa ${i + 1} del Plan de Adelanto ANSI.`,
           completada,
           aprobadaPorId: completada ? (rand() < 0.5 ? jefe.id : scouter.id) : null,
           fechaAprobacion: completada ? daysFromNow(-int(10, 300)) : null,
@@ -205,28 +209,68 @@ async function main() {
     }
   }
 
-  // ─── Insignias ──────────────────────────────────────────────────────────────
-  const catalogo = [
-    { nombre: 'Primer Respondiente', categoria: 'Servicio' },
-    { nombre: 'Ecologista', categoria: 'Naturaleza' },
-    { nombre: 'Cocinero de Campo', categoria: 'Aventura' },
-    { nombre: 'Orientación con Mapa', categoria: 'Aventura' },
-    { nombre: 'Navegante', categoria: 'Aventura' },
-    { nombre: 'Rastreador', categoria: 'Naturaleza' },
-    { nombre: 'Ciclista', categoria: 'Destreza' },
-    { nombre: 'Comunicador', categoria: 'Servicio' },
-    { nombre: 'Observador de Aves', categoria: 'Naturaleza' },
-    { nombre: 'Artesano', categoria: 'Destreza' },
+  // ─── Catálogo oficial ANSI — Insignias y reconocimientos ────────────────────
+  const catalogo: Array<{ nombre: string; categoria: string; seccion?: SeccionSeed }> = [
+    // Identificadores institucionales (aplican a todas las secciones)
+    { nombre: 'Insignia de compromiso ANSI', categoria: 'Identificadores' },
+    { nombre: 'Insignia de WFIS', categoria: 'Identificadores' },
+    { nombre: 'Cinta de Asociación (SCOUTS ANSI)', categoria: 'Identificadores' },
+    { nombre: 'Tenencia del Año (ANSI-WFIS)', categoria: 'Identificadores' },
+    { nombre: 'Sector Localidad', categoria: 'Identificadores' },
+    { nombre: 'Escudo de Grupo', categoria: 'Identificadores' },
+    { nombre: 'Numeral de Grupo', categoria: 'Identificadores' },
+    { nombre: 'Parche para Gorra (Manadas)', categoria: 'Identificadores' },
+    // Ronda de Aluxes (4-6 años) — visible en el catálogo; en espera de su sección propia
+    { nombre: 'Compromiso de Aluxe', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Hongo Mágico (Insignia Terminal)', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Parche de Milpa (serie I-IV)', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Especialidad Jitomate', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Especialidad del Gato', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Especialidad la Cometa', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Especialidad de Bicicleta', categoria: 'Ronda de Aluxes' },
+    { nombre: 'Especialidad de Fotografía', categoria: 'Ronda de Aluxes' },
+    // Manada de Gacelas (6-11 años)
+    { nombre: 'Promesa de la Gacela', categoria: 'Compromiso', seccion: 'MANADA_GACELAS' },
+    { nombre: 'Parches de Seisena (Gacela)', categoria: 'Parches', seccion: 'MANADA_GACELAS' },
+    { nombre: 'Arco Iris (Senda para Ser Scout)', categoria: 'Insignia Terminal', seccion: 'MANADA_GACELAS' },
+    // Manada de Lobatos (6-11 años)
+    { nombre: 'Promesa del Lobato', categoria: 'Compromiso', seccion: 'MANADA_LOBATOS' },
+    { nombre: 'Parches de Seisena (Lobo)', categoria: 'Parches', seccion: 'MANADA_LOBATOS' },
+    { nombre: 'Lobo Rampante (Senda para Ser Scout)', categoria: 'Insignia Terminal', seccion: 'MANADA_LOBATOS' },
+    // Tropa Scout (11-17 años)
+    { nombre: 'Tercera Clase', categoria: 'Clases', seccion: 'TROPA' },
+    { nombre: 'Segunda Clase', categoria: 'Clases', seccion: 'TROPA' },
+    { nombre: 'Primera Clase', categoria: 'Clases', seccion: 'TROPA' },
+    { nombre: 'Correa de Manigua', categoria: 'Cuerdas y Cordones', seccion: 'TROPA' },
+    { nombre: 'Cordón de la Aventura', categoria: 'Cuerdas y Cordones', seccion: 'TROPA' },
+    { nombre: 'Acampador', categoria: 'Especialidad Técnica', seccion: 'TROPA' },
+    { nombre: 'Primeros Auxilios', categoria: 'Especialidad Técnica', seccion: 'TROPA' },
+    { nombre: 'Explorador', categoria: 'Especialidad Técnica', seccion: 'TROPA' },
+    { nombre: 'Meteorología', categoria: 'Especialidad Técnica', seccion: 'TROPA' },
+    { nombre: 'Astronomía', categoria: 'Especialidad Técnica', seccion: 'TROPA' },
+    { nombre: 'Especialidad General', categoria: 'Especialidad General', seccion: 'TROPA' },
+    { nombre: 'Caballero Scout Águila', categoria: 'Insignia Terminal', seccion: 'TROPA' },
+    { nombre: 'Ave Fénix (Senda Clan)', categoria: 'Insignia Terminal', seccion: 'TROPA' },
+    // Clanes / Rovers (17-24 años)
+    { nombre: 'Especialidad de Proyectos', categoria: 'Especialidad de Clan', seccion: 'CLAN' },
+    { nombre: 'Especialidad de Expediciones', categoria: 'Especialidad de Clan', seccion: 'CLAN' },
+    { nombre: 'Especialidad de Servicio', categoria: 'Especialidad de Clan', seccion: 'CLAN' },
+    { nombre: 'Especialidad de Técnica', categoria: 'Especialidad de Clan', seccion: 'CLAN' },
+    { nombre: 'Especialidad de Instructor (R|S)', categoria: 'Especialidad de Clan', seccion: 'CLAN' },
+    { nombre: 'Escuderato Rover', categoria: 'Escuderato', seccion: 'CLAN' },
+    { nombre: 'B-P (Baden Powell)', categoria: 'Reconocimiento', seccion: 'CLAN' },
+    { nombre: 'Partida Rover', categoria: 'Reconocimiento', seccion: 'CLAN' },
   ];
   const insignias = [];
   for (const item of catalogo) {
-    insignias.push(await db.insignia.create({ data: { ...item, descripcion: `Insignia de ${item.categoria?.toLowerCase()}.` } }));
+    insignias.push(await db.insignia.create({ data: { ...item, descripcion: `${item.categoria} · ANSI.` } }));
   }
   for (const m of miembros) {
     const cuantas = int(0, 3);
     const elegidas = new Set<string>();
+    const elegibles = insignias.filter((ins) => !ins.seccion || ins.seccion === m.seccion);
     for (let i = 0; i < cuantas; i++) {
-      const ins = pick(insignias);
+      const ins = pick(elegibles);
       if (elegidas.has(ins.id)) continue;
       elegidas.add(ins.id);
       await db.insigniaObtenida.create({

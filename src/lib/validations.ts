@@ -24,10 +24,11 @@ export const ScoutProfileSchema = z.object({
   fechaNacimiento:  z.string().datetime(),
   telefono:         z.string().optional(),
   direccion:        z.string().optional(),
-  seccion:          z.enum(['MANADA','TROPA','COMUNIDAD','CLAN','JEFATURA']),
+  seccion:          z.enum(['MANADA_GACELAS','MANADA_LOBATOS','TROPA','CLAN','JEFATURA']),
   grupoId:          z.string().uuid(),
   provinciaId:      z.string().uuid(),
   cicloActivo:      z.string().optional(),
+  rama:             z.enum(['COMUNIDAD']).nullish(),
 });
 
 export const FichaMedicaSchema = z.object({
@@ -135,7 +136,7 @@ export const PrestamoSchema = z.object({
 
 export const ProgresionSchema = z.object({
   scoutProfileId: z.string().uuid(),
-  seccion:        z.enum(['MANADA','TROPA','COMUNIDAD','CLAN','JEFATURA']),
+  seccion:        z.enum(['MANADA_GACELAS','MANADA_LOBATOS','TROPA','CLAN','JEFATURA']),
   etapaNombre:    z.string().min(1),
   descripcion:    z.string().optional(),
   evidencia:      z.string().optional(),
@@ -144,7 +145,7 @@ export const ProgresionSchema = z.object({
 export const InsigniaSchema = z.object({
   nombre:      z.string().min(1),
   descripcion: z.string().optional(),
-  seccion:     z.enum(['MANADA','TROPA','COMUNIDAD','CLAN','JEFATURA']).optional(),
+  seccion:     z.enum(['MANADA_GACELAS','MANADA_LOBATOS','TROPA','CLAN','JEFATURA']).optional(),
   categoria:   z.string().optional(),
   imagen:      z.string().optional(),
 });

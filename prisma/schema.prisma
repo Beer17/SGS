@@ -21,9 +21,9 @@ enum Role {
 }
 
 enum Seccion {
-  MANADA
+  MANADA_GACELAS
+  MANADA_LOBATOS
   TROPA
-  COMUNIDAD
   CLAN
   JEFATURA
 }
@@ -148,6 +148,7 @@ model ScoutProfile {
   direccion           String?
   foto                String?           // URL/path de foto de perfil
   seccion             Seccion
+  rama                String?           // rama interna (ej. "COMUNIDAD" dentro de TROPA 15-17)
   grupoId             String
   provinciaId         String
   estatusRegistro     EstatusRegistro   @default(PENDIENTE)

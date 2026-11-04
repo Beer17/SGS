@@ -1,6 +1,8 @@
 // src/app/(dashboard)/secciones/page.tsx — Conteos reales por sección
 import Link from 'next/link';
-import { ArrowUpRight, Crown, PawPrint, TentTree, Users, Zap } from 'lucide-react';
+import {
+  ArrowUpRight, Crown, Flame, PawPrint, Rabbit, TentTree,
+} from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { getSession } from '@/lib/auth';
@@ -8,18 +10,18 @@ import { SECTION_AGES, SECTION_LABELS, SECTIONS } from '@/types';
 import type { Seccion } from '@/types';
 
 const ICONS: Record<Seccion, typeof PawPrint> = {
-  MANADA: PawPrint,
+  MANADA_GACELAS: Rabbit,
+  MANADA_LOBATOS: PawPrint,
   TROPA: TentTree,
-  COMUNIDAD: Users,
-  CLAN: Zap,
+  CLAN: Flame,
   JEFATURA: Crown,
 };
 
 const COLORS: Record<Seccion, string> = {
-  MANADA: 'bg-[#f6e6bd]',
+  MANADA_GACELAS: 'bg-[#f6e6bd]',
+  MANADA_LOBATOS: 'bg-[#efe0c8]',
   TROPA: 'bg-[#d8e9db]',
-  COMUNIDAD: 'bg-[#f0d9d0]',
-  CLAN: 'bg-[#e1dced]',
+  CLAN: 'bg-[#f0d9d0]',
   JEFATURA: 'bg-[#d9e5ed]',
 };
 

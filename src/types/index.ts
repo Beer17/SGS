@@ -1,6 +1,7 @@
 // src/types/index.ts
 export type Role = 'ADMIN' | 'NACIONAL' | 'PROVINCIA' | 'GRUPO' | 'SECCION' | 'MIEMBRO_TUTOR';
-export type Seccion = 'MANADA' | 'TROPA' | 'COMUNIDAD' | 'CLAN' | 'JEFATURA';
+export type Seccion = 'MANADA_GACELAS' | 'MANADA_LOBATOS' | 'TROPA' | 'CLAN' | 'JEFATURA';
+export type RamaTropa = 'COMUNIDAD';
 export type RegistroStatus = 'ACTIVO' | 'PENDIENTE' | 'VENCIDO' | 'BAJA';
 export type TipoEvento = 'NACIONAL' | 'REGIONAL' | 'GRUPO' | 'CAMPAMENTO' | 'REUNION' | 'CAPACITACION';
 export type TipoMovimiento = 'INGRESO' | 'EGRESO';
@@ -10,20 +11,24 @@ export type EstadoItem = 'DISPONIBLE' | 'PRESTADO' | 'MANTENIMIENTO' | 'DANADO' 
 export type TipoNotificacion = 'CUOTA_VENCIMIENTO' | 'EVENTO_RECORDATORIO' | 'PROGRESION_APROBADA' | 'SISTEMA' | 'MENSAJE';
 
 export const ROLES = ['ADMIN', 'NACIONAL', 'PROVINCIA', 'GRUPO', 'SECCION', 'MIEMBRO_TUTOR'] as const;
-export const SECTIONS: Seccion[] = ['MANADA', 'TROPA', 'COMUNIDAD', 'CLAN', 'JEFATURA'];
+export const SECTIONS: Seccion[] = ['MANADA_GACELAS', 'MANADA_LOBATOS', 'TROPA', 'CLAN', 'JEFATURA'];
 export const SECTION_LABELS: Record<Seccion, string> = {
-  MANADA: 'Manada',
-  TROPA: 'Tropa',
-  COMUNIDAD: 'Comunidad',
-  CLAN: 'Clan',
+  MANADA_GACELAS: 'Manada Gacelas',
+  MANADA_LOBATOS: 'Manada Lobatos',
+  TROPA: 'Tropa Scout',
+  CLAN: 'Clan / Rover',
   JEFATURA: 'Jefatura',
 };
 export const SECTION_AGES: Record<Seccion, string> = {
-  MANADA: '7–10 años',
-  TROPA: '11–14 años',
-  COMUNIDAD: '15–17 años',
-  CLAN: '18–21 años',
+  MANADA_GACELAS: '6–11 años',
+  MANADA_LOBATOS: '6–11 años',
+  TROPA: '11–17 años',
+  CLAN: '17–24 años',
   JEFATURA: 'Mayores de 21',
+};
+export const RAMAS_TROPA: RamaTropa[] = ['COMUNIDAD'];
+export const RAMA_LABELS: Record<RamaTropa, string> = {
+  COMUNIDAD: 'Comunidad (15–17)',
 };
 
 export const PERMISSIONS = [

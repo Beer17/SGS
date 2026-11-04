@@ -154,7 +154,7 @@ export default function CargaPage() {
             <h2 className="font-display font-bold">Cómo preparar tu CSV</h2>
             <ol className="mt-3 list-decimal space-y-2 pl-4 text-sm text-[#5c6f63]">
               <li>Descarga la plantilla y no cambies los encabezados.</li>
-              <li><code className="rounded bg-paper px-1">seccion</code>: MANADA, TROPA, COMUNIDAD, CLAN o JEFATURA.</li>
+              <li><code className="rounded bg-paper px-1">seccion</code>: MANADA_GACELAS, MANADA_LOBATOS, TROPA, CLAN o JEFATURA.</li>
               <li><code className="rounded bg-paper px-1">grupo</code>: número del grupo (ej. 12).</li>
               <li><code className="rounded bg-paper px-1">provincia</code>: nombre exacto (Querétaro, Puebla, Jalisco…).</li>
               <li><code className="rounded bg-paper px-1">fecha_nacimiento</code>: AAAA-MM-DD.</li>
