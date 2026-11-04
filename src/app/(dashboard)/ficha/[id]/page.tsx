@@ -2,9 +2,9 @@
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import {
-  Activity, AlertTriangle, ArrowLeft, Droplets, HeartPulse, Phone, ShieldCheck, ShieldAlert, Siren, Stethoscope, User,
+  Activity, AlertTriangle, ArrowLeft, Droplets, HeartPulse, Medal, Phone, ShieldCheck, ShieldAlert, Siren, Stethoscope, User,
 } from 'lucide-react';
-import { getSession, canViewMedical, canManageMembers } from '@/lib/auth';
+import { getSession, canViewMedical, canManageMembers, canOperate } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { audit, maskCurp } from '@/lib/api';
 import { calcularEdad, estatusRegistroColor, formatDate, getInitials } from '@/lib/utils';
@@ -12,6 +12,15 @@ import { SECTION_LABELS } from '@/types';
 import { PRINT_CSS } from '@/components/PrintCss';
 import { MemberActions } from '@/components/members/MemberActions';
 import { PrintButton } from '@/components/members/PrintButton';
+import { InsigniaGrant } from '@/components/members/InsigniaGrant';
+
+// Paleta determinista por categoría de insignia
+const BADGE_COLORS = ['bg-[#e8b93b]', 'bg-[#2b6a50]', 'bg-[#c96b4b]', 'bg-[#3a5aa8]', 'bg-[#7a5a06]', 'bg-[#5a5a7a]'];
+function badgeColor(categoria: string): string {
+  let hash = 0;
+  for (const ch of categoria) hash = (hash * 31 + (ch.codePointAt(0) ?? 0)) | 0;
+  return BADGE_COLORS[Math.abs(hash) % BADGE_COLORS.length];
+}
 
 export default async function FichaPage({ params }: { params: { id: string } }) {
   const session = await getSession();
@@ -24,7 +33,7 @@ export default async function FichaPage({ params }: { params: { id: string } }) 
       provincia: true,
       fichaMedica: true,
       progresiones: { orderBy: { createdAt: 'asc' } },
-      insigniasObtenidas: { include: { insignia: true } },
+      insigniasObtenidas: { include: { insignia: true }, orderBy: { fechaObtencion: 'desc' } },
       cuotas: { where: { estatus: { in: ['PENDIENTE', 'VENCIDA'] } }, select: { id: true } },
     },
   });
@@ -51,9 +60,21 @@ export default async function FichaPage({ params }: { params: { id: string } }) 
     await audit({ userId: session.id, accion: 'CONSULTA_FICHA_MEDICA', entidad: 'FichaMedica', entidadId: scout.fichaMedica.id });
   }
 
+  // Resolver quién otorgó cada insignia (corre con el cliente actual, sin depender del nuevo relation)
+  const otorganteIds = [...new Set(scout.insigniasObtenidas.map((io) => io.otorgadaPorId).filter((v): v is string => Boolean(v)))];
+  const otorgantes = otorganteIds.length > 0
+    ? await db.user.findMany({ where: { id: { in: otorganteIds } }, select: { id: true, email: true } })
+    : [];
+  const otorganteEmail = new Map(otorgantes.map((u) => [u.id, u.email]));
+
   const ficha = medicalAllowed ? scout.fichaMedica : null;
   const edad = calcularEdad(scout.fechaNacimiento);
   const completadas = scout.progresiones.filter((p) => p.completada).length;
+  const insigniasPorCategoria = new Map<string, number>();
+  for (const io of scout.insigniasObtenidas) {
+    const cat = io.insignia.categoria ?? 'General';
+    insigniasPorCategoria.set(cat, (insigniasPorCategoria.get(cat) ?? 0) + 1);
+  }
   const alertasMedicas = ficha ? [ficha.alergias, ficha.padecimientos, ficha.restriccionesActividad].filter(Boolean) as string[] : [];
   const requiereAtencion = alertasMedicas.length > 0;
 
@@ -215,19 +236,6 @@ export default async function FichaPage({ params }: { params: { id: string } }) 
             </ol>
           </section>
 
-          {/* Insignias */}
-          <section className="rounded-2xl border border-[#e2e9df] bg-white p-6 shadow-soft">
-            <h2 className="font-display text-lg font-bold">Insignias <span className="text-sm font-sans font-bold text-[#829087]">({scout.insigniasObtenidas.length})</span></h2>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {scout.insigniasObtenidas.map((io) => (
-                <span key={io.id} className="rounded-full bg-[#fff8e7] px-3 py-1.5 text-xs font-bold text-[#7a5a06]" title={io.insignia.categoria ?? ''}>
-                  🏅 {io.insignia.nombre}
-                </span>
-              ))}
-              {scout.insigniasObtenidas.length === 0 && <p className="text-sm text-[#829087]">Aún no ha obtenido insignias.</p>}
-            </div>
-          </section>
-
           {/* Seguridad en campo */}
           <section className="rounded-2xl bg-ink p-6 text-white shadow-soft print:hidden">
             <p className="text-xs font-bold uppercase tracking-[.2em] text-[#8fb59e]">En campo</p>
@@ -235,6 +243,71 @@ export default async function FichaPage({ params }: { params: { id: string } }) 
           </section>
         </div>
       </div>
+
+      {/* ─── Área de insignias (ancho completo) ─── */}
+      <section className="mt-6 rounded-2xl border border-[#e2e9df] bg-white p-6 shadow-soft" aria-labelledby="area-insignias">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h2 id="area-insignias" className="flex items-center gap-2 font-display text-xl font-bold">
+              <Medal size={22} className="text-[#c9a227]" /> Área de insignias
+              <span className="rounded-full bg-[#fff8e7] px-2.5 py-0.5 font-sans text-xs font-bold text-[#7a5a06]">{scout.insigniasObtenidas.length}</span>
+            </h2>
+            <p className="mt-1 text-xs text-[#829087]">Reconocimientos obtenidos en su sección · visibles también en su credencial y expediente impreso.</p>
+          </div>
+          {canOperate(session) && (
+            <InsigniaGrant
+              scoutId={scout.id}
+              seccion={scout.seccion}
+              obtainedIds={scout.insigniasObtenidas.map((io) => io.insignia.id)}
+            />
+          )}
+        </div>
+
+        {/* Resumen por categoría */}
+        {insigniasPorCategoria.size > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {[...insigniasPorCategoria.entries()].sort((a, b) => b[1] - a[1]).map(([cat, n]) => (
+              <span key={cat} className="rounded-full bg-paper px-3 py-1.5 text-[11px] font-bold text-[#5c6f63]">
+                {cat} · <span className="text-ink">{n}</span>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* Tarjetas de insignia */}
+        {scout.insigniasObtenidas.length === 0 ? (
+          <div className="mt-4 rounded-xl border border-dashed border-[#cbd8ca] bg-paper/40 p-8 text-center">
+            <Medal size={30} className="mx-auto text-[#c9a227]" />
+            <p className="mt-2 font-bold">Aún sin insignias</p>
+            <p className="mt-1 text-sm text-[#829087]">
+              Las insignias se otorgan al completar especialidades y servicio.{' '}
+              {canOperate(session) ? 'Usa el selector de arriba para otorgar la primera.' : 'El scouter se las entregará en la próxima reunión.'}
+            </p>
+          </div>
+        ) : (
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {scout.insigniasObtenidas.map((io) => {
+              const categoria = io.insignia.categoria ?? 'General';
+              const otorgo = io.otorgadaPorId ? otorganteEmail.get(io.otorgadaPorId) : null;
+              return (
+                <li key={io.id} className="flex items-start gap-3 rounded-xl border border-[#f0ead2] bg-[#fffdf3] p-3 transition-colors hover:border-[#e8b93b]">
+                  <div className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl text-white ${badgeColor(categoria)}`}>
+                    <Medal size={24} strokeWidth={1.8} aria-hidden />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-bold leading-snug">{io.insignia.nombre}</p>
+                    <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[.14em] text-[#a3a05a]">{categoria}</p>
+                    <p className="mt-1.5 text-[10px] leading-snug text-[#829087]">
+                      Obtenida el {formatDate(io.fechaObtencion)}
+                      {otorgo && <><br />Otorgó: <span className="font-semibold text-[#5c6f63]">{otorgo}</span></>}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }

@@ -181,7 +181,7 @@ SGS/
 
 ## 7 — Base de datos — Prisma
 
-Proveedor: **PostgreSQL** (`DATABASE_URL`). Migraciones: `20261104032340_init`, `20261104033249_evento_cancelado`.
+Proveedor: **PostgreSQL** (`DATABASE_URL`). Migraciones: `20261104032340_init`, `20261104033249_evento_cancelado`, `20261104064911_insignia_otorgante_rel` (relación otorgante→usuario en `InsigniaObtenida`).
 
 ### Enums (8)
 
@@ -359,11 +359,11 @@ Etiquetas es-MX: `ROLE_LABELS`, `TIPO_EVENTO_LABELS`, `TIPO_NOTIFICACION_LABELS`
 |---|---|---|
 | `/login` | `(auth)/login/page.tsx` | Formulario; `signIn('credentials', {redirect:false})`; muestra cuentas demo; respeta `?callbackUrl=` |
 | `/register` | `(auth)/register/page.tsx` | Solicitud de acceso (validación en provincia); sin backend — intencional |
-| `/` | `(dashboard)/page.tsx` | **Servidor.** Staff: KPIs reales (miembros activos, grupos, alertas médicas, próximos eventos), balance del mes, actividad reciente (AuditLog), próximo evento con cuenta regresiva. Tutor: `<TutorDashboard>` (expediente vinculado, cuotas, inscripciones) |
+| `/` | `(dashboard)/page.tsx` | **Servidor.** Staff: KPIs reales (miembros activos, grupos, alertas médicas, próximos eventos), balance del mes, actividad reciente (AuditLog), próximo evento con cuenta regresiva. Tutor: `<TutorDashboard>` (expediente vinculado, cuotas, inscripciones, **insignias recientes**) |
 | `/censo` | `(dashboard)/censo/page.tsx` | Cliente; `?q/seccion/estatus/grupoId`; tabla paginada; filtros; enlaces a ficha/edición |
 | `/censo/nuevo` | `(dashboard)/censo/nuevo/page.tsx` | Alta con `<MemberForm mode="create">` |
 | `/censo/[id]/editar` | `(dashboard)/censo/[id]/editar/page.tsx` | Edición con `<MemberForm mode="edit">` |
-| `/ficha/[id]` | `(dashboard)/ficha/[id]/page.tsx` | **Servidor.** Expediente completo: datos, edad, CURP enmascarada, alerta médica global, ficha médica (si permiso), progresión, insignias; auditoría `CONSULTA_FICHA_MEDICA`; impresión limpia (PRINT_CSS); `MemberActions` (credencial/editar/baja con confirmación). Tutor: solo su vinculado |
+| `/ficha/[id]` | `(dashboard)/ficha/[id]/page.tsx` | **Servidor.** Expediente completo: datos, edad, CURP enmascarada, alerta médica global, ficha médica (si permiso), progresión, **Área de insignias** (tarjetas con categoría, fecha y quién otorgó + recuento por categoría + otorgamiento directo con `InsigniaGrant` para jefatura/scouter); auditoría `CONSULTA_FICHA_MEDICA`; impresión limpia (PRINT_CSS); `MemberActions` (credencial/editar/baja con confirmación). Tutor: solo su vinculado |
 | `/credencial/[id]` | `(dashboard)/credencial/[id]/page.tsx` | **Servidor.** `CredencialCard` con QR real (`codigoCredencialQR`) + estado; tipo de sangre solo jefatura/propio; CSS de impresión |
 | `/secciones` | `(dashboard)/secciones/page.tsx` | **Servidor.** Conteos reales por sección (tutor: solo sus vinculados) |
 | `/secciones/[section]` | `(dashboard)/secciones/[section]/page.tsx` | **Servidor.** Slug MANADA…JEFATURA; cards de miembros → ficha |

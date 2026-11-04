@@ -95,6 +95,7 @@ model User {
 
   scoutProfile          ScoutProfile?
   progresionesAprobadas ProgresionScout[] @relation("Aprobador")
+  insigniasOtorgadas    InsigniaObtenida[] @relation("OtorganteInsignia")
   cuotasRegistradas     Cuota[]           @relation("RegistradorCuota")
   movimientosRegistrados MovimientoFinanciero[] @relation("RegistradorMovimiento")
   notificaciones        Notificacion[]    @relation("DestinatarioNotificacion")
@@ -241,6 +242,7 @@ model InsigniaObtenida {
 
   scoutProfile   ScoutProfile @relation(fields: [scoutProfileId], references: [id], onDelete: Cascade)
   insignia       Insignia     @relation(fields: [insigniaId], references: [id])
+  otorgadaPor    User?        @relation("OtorganteInsignia", fields: [otorgadaPorId], references: [id])
 
   @@unique([scoutProfileId, insigniaId])
   @@index([scoutProfileId])

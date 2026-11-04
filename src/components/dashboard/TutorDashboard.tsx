@@ -1,7 +1,7 @@
 // src/components/dashboard/TutorDashboard.tsx
 // Vista de padre/tutor: solo sus expedientes vinculados.
 import Link from 'next/link';
-import { CalendarDays, ChevronRight, IdCard, Tent, UserRound, Wallet } from 'lucide-react';
+import { CalendarDays, ChevronRight, IdCard, Medal, Tent, UserRound, Wallet } from 'lucide-react';
 import { db } from '@/lib/db';
 import { estatusRegistroColor, formatCurrency } from '@/lib/utils';
 import { SECTION_LABELS } from '@/types';
@@ -12,6 +12,12 @@ export async function TutorDashboard({ userId, email }: { userId: string; email:
     include: {
       grupo: { select: { numeroGrupo: true, nombre: true } },
       progresiones: { select: { completada: true } },
+      insigniasObtenidas: {
+        include: { insignia: { select: { nombre: true } } },
+        orderBy: { fechaObtencion: 'desc' },
+        take: 4,
+      },
+      _count: { select: { insigniasObtenidas: true } },
       cuotas: { where: { estatus: { in: ['PENDIENTE', 'VENCIDA'] } }, select: { monto: true, concepto: true, estatus: true } },
       inscripciones: {
         where: { evento: { cancelado: false, fechaInicio: { gte: new Date() } } },
@@ -103,6 +109,29 @@ export async function TutorDashboard({ userId, email }: { userId: string; email:
                       </ul>
                     )}
                   </div>
+                </div>
+
+                {/* Insignias (estrechas) */}
+                <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-[#f0ead2] bg-[#fffdf3] px-4 py-3">
+                  <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-[#a3a05a]">
+                    <Medal size={13} /> Insignias ({h._count.insigniasObtenidas})
+                  </span>
+                  {h.insigniasObtenidas.length === 0 ? (
+                    <span className="text-xs text-[#829087]">Aún sin insignias — se obtienen con especialidades y servicio.</span>
+                  ) : (
+                    <>
+                      {h.insigniasObtenidas.map((io) => (
+                        <span key={io.insignia.nombre} className="rounded-full bg-white px-2.5 py-1 text-[11px] font-bold text-[#7a5a06] ring-1 ring-[#ecdfb2]">
+                          🏅 {io.insignia.nombre}
+                        </span>
+                      ))}
+                      {h._count.insigniasObtenidas > h.insigniasObtenidas.length && (
+                        <Link href={`/ficha/${h.id}`} className="text-[11px] font-bold text-moss">
+                          +{h._count.insigniasObtenidas - h.insigniasObtenidas.length} más →
+                        </Link>
+                      )}
+                    </>
+                  )}
                 </div>
               </section>
             );

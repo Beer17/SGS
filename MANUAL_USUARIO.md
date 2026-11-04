@@ -41,8 +41,10 @@ Arriba verás 4 tarjetas: **miembros activos · grupos · alertas médicas · pr
 - **Datos personales** con edad calculada y CURP enmascarada.
 - **⚠️ Caja amarilla**: aparece sola si el miembro tiene alergias, padecimientos o restricciones. **Revísala antes de TODA salida o campamento.**
 - **Ficha médica y emergencia**: tipo de sangre grande, seguro, médico tratante, alergias, contacto(s) de emergencia y si la responsiva está firmada.
-- **Progresión** (barra) y **insignias**.
+- **Progresión** (barra) y el **Área de insignias**: tarjetas con nombre, categoría, fecha en que se obtuvo y quién la otorgó; resumen por categoría.
 - Botones: **Credencial** (QR para imprimir) · **Editar** · **Dar de baja** (pide confirmación; nunca borra el historial).
+
+**Otorgar una insignia desde la ficha:** si eres jefatura o scouter verás un selector “Otorgar insignia…” — elige del catálogo y pulsa **Otorgar**. También puedes hacerlo desde **Progresión**. La familia recibe un aviso en la campana.
 
 **Imprimir**: botón **Imprimir / PDF** → sale limpia para tu carpeta de campo.
 
