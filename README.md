@@ -64,6 +64,6 @@ Datos de demostración 100% ficticios. CURP enmascarada fuera del expediente; fi
 
 ## Licencia / uso
 
-Proyecto interno de ANSI. Antes de un piloto real: cambiar contraseñas, rotar `AUTH_SECRET` y revisar avisos de privacidad (ver DEPLOY-AZURE.md).
+Proyecto Creado y propiedad de miguel casas beer . Antes de un piloto real: cambiar contraseñas, rotar `AUTH_SECRET` y revisar avisos de privacidad (ver DEPLOY-AZURE.md).
 
 Propiedad de miguel beer
