@@ -9,11 +9,11 @@ import { TIPO_NOTIFICACION_LABELS } from '@/lib/labels';
 import type { TipoNotificacion } from '@/types';
 
 const TIPO_COLOR: Record<TipoNotificacion, string> = {
-  CUOTA_VENCIMIENTO:   'bg-[#fdecea] text-clay',
-  EVENTO_RECORDATORIO: 'bg-[#fff5d9] text-[#a9790a]',
+  CUOTA_VENCIMIENTO:   'bg-dangersoft text-clay',
+  EVENTO_RECORDATORIO: 'bg-warnsoft text-warn',
   PROGRESION_APROBADA: 'bg-fern text-moss',
-  SISTEMA:             'bg-[#e8e8f0] text-[#5a5a7a]',
-  MENSAJE:             'bg-[#e8f0ff] text-[#3a5aa8]',
+  SISTEMA:             'bg-neutralsoft text-neutral',
+  MENSAJE:             'bg-infosoft text-info',
 };
 
 export default function NotificacionesPage() {
@@ -27,14 +27,14 @@ export default function NotificacionesPage() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Sistema</p>
           <h1 className="mt-2 font-display text-3xl font-bold">Notificaciones</h1>
-          <p className="mt-2 text-sm text-[#718078]">
+          <p className="mt-2 text-sm text-muted">
             {noLeidas > 0 ? `${noLeidas} sin leer.` : 'Todo al día.'}
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setSoloSinLeer((v) => !v)}
             aria-pressed={soloSinLeer}
-            className={`rounded-lg border px-3 py-2 text-xs font-bold ${soloSinLeer ? 'border-moss bg-fern text-moss' : 'border-[#dfe7dc] text-[#718078]'}`}>
+            className={`rounded-lg border px-3 py-2 text-xs font-bold ${soloSinLeer ? 'border-moss bg-fern text-moss' : 'border-linestrong text-muted'}`}>
             Solo sin leer
           </button>
           {noLeidas > 0 && (
@@ -47,11 +47,11 @@ export default function NotificacionesPage() {
       </div>
 
       {visibles.length === 0 ? (
-        <div className="grid min-h-64 place-items-center rounded-2xl border border-dashed border-[#cbd8ca] bg-white">
+        <div className="grid min-h-64 place-items-center rounded-2xl border border-dashed border-line bg-surface">
           <div className="text-center">
             <Bell className="mx-auto mb-3 text-moss" size={30} />
             <p className="font-bold">{soloSinLeer ? 'Sin pendientes 🎉' : 'Sin notificaciones'}</p>
-            <p className="mt-1 text-sm text-[#829087]">Te avisaremos cuando haya algo importante.</p>
+            <p className="mt-1 text-sm text-faint">Te avisaremos cuando haya algo importante.</p>
           </div>
         </div>
       ) : (
@@ -64,15 +64,15 @@ export default function NotificacionesPage() {
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-bold">{n.titulo}</span>
-                  <span className="mt-1 block text-sm font-normal text-[#718078]">{n.mensaje}</span>
-                  <span className="mt-2 block text-xs font-normal text-[#a3b0a8]">{formatDate(n.createdAt)}</span>
+                  <span className="mt-1 block text-sm font-normal text-muted">{n.mensaje}</span>
+                  <span className="mt-2 block text-xs font-normal text-faint">{formatDate(n.createdAt)}</span>
                 </span>
               </>
             );
             return (
               <li key={n.id}
                 className={`flex items-start gap-4 rounded-2xl border p-5 transition-colors ${
-                  n.leida ? 'border-[#e2e9df] bg-white' : 'border-moss/20 bg-fern/40'
+                  n.leida ? 'border-line bg-surface' : 'border-moss/20 bg-fern/40'
                 }`}
               >
                 {n.accionUrl ? (

@@ -39,7 +39,7 @@ export default async function SeccionDetallePage({ params }: { params: { section
       <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold">{SECTION_LABELS[seccion]}</h1>
-          <p className="mt-1 text-sm text-[#718078]">
+          <p className="mt-1 text-sm text-muted">
             {SECTION_AGES[seccion]} · {miembros.length} miembro(s) · {activos} activo(s)
           </p>
         </div>
@@ -49,7 +49,7 @@ export default async function SeccionDetallePage({ params }: { params: { section
       </div>
 
       {miembros.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-[#dfe7dc] p-10 text-center text-sm text-[#829087]">
+        <div className="mt-10 rounded-2xl border border-dashed border-linestrong p-10 text-center text-sm text-faint">
           <Users className="mx-auto mb-3 text-moss" size={30} />
           No hay miembros en esta sección todavía.
         </div>
@@ -59,19 +59,19 @@ export default async function SeccionDetallePage({ params }: { params: { section
             <Link
               key={m.id}
               href={`/ficha/${m.id}`}
-              className="group flex items-center gap-4 rounded-2xl border border-[#e2e9df] bg-white p-4 shadow-soft transition-colors hover:border-moss"
+              className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 shadow-soft transition-colors hover:border-moss"
             >
               <div className="grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-fern font-display text-lg font-bold text-moss">
                 {getInitials(m.nombres, m.apellidos)}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate font-bold group-hover:text-moss">{m.nombres} {m.apellidos}</p>
-                <p className="mt-0.5 truncate text-xs text-[#829087]">Grupo {m.grupo.numeroGrupo} · {m.grupo.nombre}</p>
+                <p className="mt-0.5 truncate text-xs text-faint">Grupo {m.grupo.numeroGrupo} · {m.grupo.nombre}</p>
                 <span className={`mt-2 inline-block rounded-full px-2 py-0.5 text-[10px] font-bold ${estatusRegistroColor(m.estatusRegistro)}`}>
                   {m.estatusRegistro}
                 </span>
               </div>
-              <ChevronRight size={17} className="shrink-0 text-[#b2beb5] group-hover:text-moss" />
+              <ChevronRight size={17} className="shrink-0 text-faint group-hover:text-moss" />
             </Link>
           ))}
         </div>

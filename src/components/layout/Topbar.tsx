@@ -30,12 +30,12 @@ export function Topbar() {
   }
 
   return (
-    <header className="relative z-30 flex h-20 items-center justify-between border-b border-[#e5ebe3] bg-white/80 px-5 backdrop-blur lg:px-9">
+    <header className="relative z-30 flex h-20 items-center justify-between border-b border-line bg-surface/80 px-5 backdrop-blur lg:px-9">
       <div className="flex items-center gap-3">
         {/* Menú móvil */}
         <button
           onClick={() => setShowMenu((v) => !v)}
-          className="rounded-lg p-2 text-[#6b7b72] lg:hidden"
+          className="rounded-lg p-2 text-muted lg:hidden"
           aria-label="Abrir menú" aria-expanded={showMenu}
         >
           <Menu size={20} />
@@ -43,7 +43,7 @@ export function Topbar() {
 
         {/* Buscador global (censo) */}
         <form onSubmit={buscar} className="relative hidden sm:block" role="search">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#91a097]" size={17} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-faint" size={17} />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -56,13 +56,13 @@ export function Topbar() {
 
       {/* Panel móvil */}
       {showMenu && (
-        <div className="absolute left-0 right-0 top-full z-40 max-h-[70vh] overflow-y-auto border-b border-[#e2e9df] bg-white p-4 shadow-soft lg:hidden">
+        <div className="absolute left-0 right-0 top-full z-40 max-h-[70vh] overflow-y-auto border-b border-line bg-surface p-4 shadow-soft lg:hidden">
           {NAV_GROUPS.map((group) => (
             <div key={group.label} className="mb-3">
-              <p className="px-2 text-[10px] font-bold uppercase tracking-[.18em] text-[#a3b0a8]">{group.label}</p>
+              <p className="px-2 text-[10px] font-bold uppercase tracking-[.18em] text-faint">{group.label}</p>
               {group.links.map(({ href, label, icon: Icon }) => (
                 <Link key={href} href={href} onClick={() => setShowMenu(false)}
-                  className="flex items-center gap-3 rounded-xl px-2 py-2.5 text-sm font-semibold text-[#4d5f55] hover:bg-paper">
+                  className="flex items-center gap-3 rounded-xl px-2 py-2.5 text-sm font-semibold text-muted hover:bg-paper">
                   <Icon size={18} /> {label}
                 </Link>
               ))}
@@ -70,7 +70,7 @@ export function Topbar() {
           ))}
           {NAV_FOOTER.map(({ href, label, icon: Icon }) => (
             <Link key={href} href={href} onClick={() => setShowMenu(false)}
-              className="flex items-center gap-3 rounded-xl px-2 py-2.5 text-sm font-semibold text-[#4d5f55] hover:bg-paper">
+              className="flex items-center gap-3 rounded-xl px-2 py-2.5 text-sm font-semibold text-muted hover:bg-paper">
               <Icon size={18} /> {label}
             </Link>
           ))}
@@ -82,7 +82,7 @@ export function Topbar() {
         <div className="relative">
           <button
             onClick={() => setShowNotifs((v) => !v)}
-            className="relative rounded-lg p-2 text-[#6b7b72]"
+            className="relative rounded-lg p-2 text-muted"
             aria-label={`Notificaciones${noLeidas > 0 ? ` (${noLeidas} sin leer)` : ''}`}
           >
             <Bell size={19} />
@@ -94,8 +94,8 @@ export function Topbar() {
           </button>
 
           {showNotifs && (
-            <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-[#e2e9df] bg-white shadow-soft">
-              <div className="flex items-center justify-between border-b border-[#edf0ea] px-4 py-3">
+            <div className="absolute right-0 top-full z-50 mt-2 w-80 rounded-2xl border border-line bg-surface shadow-soft">
+              <div className="flex items-center justify-between border-b border-line px-4 py-3">
                 <span className="font-display font-bold">Notificaciones</span>
                 {noLeidas > 0 && (
                   <button
@@ -109,24 +109,24 @@ export function Topbar() {
               </div>
               <ul className="max-h-80 overflow-y-auto">
                 {items.length === 0 && (
-                  <li className="p-4 text-center text-sm text-[#829087]">Sin notificaciones</li>
+                  <li className="p-4 text-center text-sm text-faint">Sin notificaciones</li>
                 )}
                 {items.map((n) => (
                   <li key={n.id}>
                     <button
                       onClick={() => void abrirNotificacion(n.id, n.accionUrl)}
-                      className={`block w-full border-b border-[#f0f4ef] px-4 py-3 text-left text-sm transition-colors hover:bg-paper ${!n.leida ? 'bg-fern/50' : ''}`}
+                      className={`block w-full border-b border-line px-4 py-3 text-left text-sm transition-colors hover:bg-paper ${!n.leida ? 'bg-fern/50' : ''}`}
                     >
                       <div className="flex items-center gap-2 font-bold">
                         {!n.leida && <span className="h-2 w-2 rounded-full bg-clay" aria-hidden />}
                         {n.titulo}
                       </div>
-                      <div className="mt-0.5 text-[#718078]">{n.mensaje}</div>
+                      <div className="mt-0.5 text-muted">{n.mensaje}</div>
                     </button>
                   </li>
                 ))}
               </ul>
-              <div className="border-t border-[#edf0ea] p-2">
+              <div className="border-t border-line p-2">
                 <Link href="/notificaciones" onClick={() => setShowNotifs(false)}
                   className="block rounded-lg px-3 py-2 text-center text-xs font-bold text-moss hover:bg-paper">
                   Ver todas
@@ -136,16 +136,16 @@ export function Topbar() {
           )}
         </div>
 
-        <div className="hidden h-7 w-px bg-[#e5ebe3] sm:block" />
+        <div className="hidden h-7 w-px bg-line sm:block" />
 
         <div className="text-right">
           <div className="max-w-44 truncate text-sm font-bold">{user?.email ?? 'Usuario'}</div>
-          <div className="text-xs font-semibold text-[#829087]">{user ? ROLE_LABELS[user.role] : ''}</div>
+          <div className="text-xs font-semibold text-faint">{user ? ROLE_LABELS[user.role] : ''}</div>
         </div>
 
         <button onClick={() => void logout()}
           title="Cerrar sesión" aria-label="Cerrar sesión"
-          className="rounded-lg p-2 text-[#6b7b72] hover:bg-paper hover:text-clay">
+          className="rounded-lg p-2 text-muted hover:bg-paper hover:text-clay">
           <LogOut size={18} />
         </button>
       </div>

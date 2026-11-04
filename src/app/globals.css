@@ -2,8 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { --font-manrope: 'Trebuchet MS'; --font-space-grotesk: 'Trebuchet MS'; }
+:root {
+  --font-manrope: 'Trebuchet MS';
+  --font-space-grotesk: 'Trebuchet MS';
+
+  /* ─── Tema claro (def) ─── */
+  --c-paper: 247 248 243;          /* #f7f8f3 fondo app */
+  --c-surface: 255 255 255;        /* tarjetas */
+  --c-panel: 23 36 31;             /* hero cards oscuras */
+  --c-line: 226 233 223;           /* #e2e9df bordes */
+  --c-line-strong: 223 231 220;    /* #dfe7dc bordes de input */
+  --c-fern: 231 241 232;           /* #e7f1e8 tinte verde */
+  --c-ink: 23 36 31;               /* #17241f texto */
+  --c-moss: 43 106 80;             /* #2b6a50 verde marca */
+  --c-clay: 201 107 75;            /* #c96b4b acento */
+  --c-citrus: 242 201 76;          /* #f2c94c acento */
+  --c-muted: 113 128 120;          /* #718078 texto secundario */
+  --c-faint: 130 144 135;          /* #829087 texto terciario */
+  --c-warn-soft: 255 245 217;      /* #fff5d9 chip ámbar */
+  --c-warn: 169 121 10;            /* #a9790a texto ámbar */
+  --c-danger-soft: 253 236 234;    /* #fdecea chip rojo */
+  --c-info-soft: 232 240 255;      /* #e8f0ff chip azul */
+  --c-info: 58 90 168;             /* #3a5aa8 texto azul */
+  --c-neutral-soft: 232 232 240;   /* #e8e8f0 chip gris */
+  --c-neutral: 90 90 122;          /* #5a5a7a texto gris */
+  --c-parchment: 255 253 243;      /* #fffdf3 tarjetas de insignia */
+  --c-shadow: 23 36 31;            /* sombra suave (rgb) */
+}
+
+.dark {
+  /* ─── Tema oscuro ─── */
+  --c-paper: 16 26 21;             /* #101a15 fondo app */
+  --c-surface: 26 38 32;           /* #1a2620 tarjetas */
+  --c-panel: 28 40 34;             /* #1c2822 hero cards */
+  --c-line: 42 56 48;              /* #2a3830 bordes */
+  --c-line-strong: 56 72 61;       /* #38483d bordes input */
+  --c-fern: 34 51 43;              /* #22332b tinte verde */
+  --c-ink: 232 237 232;            /* #e8ede8 texto */
+  --c-moss: 124 199 158;           /* #7cc79e verde marca (legible en oscuro) */
+  --c-clay: 232 154 122;           /* #e89a7a acento */
+  --c-citrus: 248 214 106;         /* #f8d66a acento */
+  --c-muted: 164 184 171;          /* #a4b8ab texto secundario */
+  --c-faint: 125 145 132;          /* #7d9184 texto terciario */
+  --c-warn-soft: 43 38 16;         /* #2b2610 chip ámbar */
+  --c-warn: 216 185 58;            /* #d8b93a texto ámbar */
+  --c-danger-soft: 44 31 26;       /* #2c1f1a chip rojo */
+  --c-info-soft: 27 38 55;         /* #1b2637 chip azul */
+  --c-info: 147 176 232;           /* #93b0e8 texto azul */
+  --c-neutral-soft: 36 36 46;      /* #24242e chip gris */
+  --c-neutral: 168 168 200;        /* #a8a8c8 texto gris */
+  --c-parchment: 36 31 18;         /* #241f12 tarjetas insignia */
+  --c-shadow: 0 0 0;               /* sombra neutra */
+}
+
 * { box-sizing: border-box; }
-body { margin: 0; background: #f7f8f3; color: #17241f; font-family: var(--font-manrope), sans-serif; }
+body {
+  margin: 0;
+  background: rgb(var(--c-paper));
+  color: rgb(var(--c-ink));
+  font-family: var(--font-manrope), sans-serif;
+  transition: background-color .2s ease, color .2s ease;
+}
 button, input { font: inherit; }
-::selection { background: #f2c94c; color: #17241f; }
+::selection { background: rgb(var(--c-citrus)); color: rgb(var(--c-paper)); }
+
+/* Impresión siempre en claro */
+@media print {
+  body { background: #ffffff !important; color: #000000 !important; }
+}

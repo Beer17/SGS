@@ -132,39 +132,39 @@ export default function ProgresionPage() {
       <div className="mb-6">
         <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Desarrollo</p>
         <h1 className="mt-2 font-display text-3xl font-bold">Progresión scout</h1>
-        <p className="mt-1 text-sm text-[#718078]">Busca un miembro, revisa sus etapas y aprueba avances; otorga insignias del catálogo.</p>
+        <p className="mt-1 text-sm text-muted">Busca un miembro, revisa sus etapas y aprueba avances; otorga insignias del catálogo.</p>
       </div>
 
-      {error && <div role="alert" className="mb-4 rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
+      {error && <div role="alert" className="mb-4 rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
       {mensaje && <div role="status" className="mb-4 rounded-lg bg-fern px-4 py-3 text-sm font-bold text-moss">{mensaje}</div>}
 
       <div className="grid gap-6 lg:grid-cols-[380px_1fr]">
         {/* ─── Buscador ─── */}
-        <section className="rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft">
-          <label className="text-xs font-bold uppercase tracking-wide text-[#5c6f63]" htmlFor="buscar-miembro">Buscar miembro</label>
+        <section className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
+          <label className="text-xs font-bold uppercase tracking-wide text-muted" htmlFor="buscar-miembro">Buscar miembro</label>
           <div className="relative mt-2">
-            <Search size={17} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#91a097]" />
+            <Search size={17} className="absolute left-3 top-1/2 -translate-y-1/2 text-faint" />
             <input id="buscar-miembro" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Nombre o CURP…"
-              className="w-full rounded-lg border border-[#dfe7dc] bg-white py-2.5 pl-10 pr-3 text-sm outline-none focus:border-moss" />
+              className="w-full rounded-lg border border-linestrong bg-surface py-2.5 pl-10 pr-3 text-sm outline-none focus:border-moss" />
             {buscando && <Loader2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-moss" />}
           </div>
-          <ul className="mt-3 divide-y divide-[#f0f4ef]">
+          <ul className="mt-3 divide-y divide-line">
             {results.map((m) => (
               <li key={m.id}>
                 <button onClick={() => void cargarDetalle(m.id)}
                   className={`flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2.5 text-left transition-colors hover:bg-paper ${seleccionado?.id === m.id ? 'bg-fern/50' : ''}`}>
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-semibold">{m.apellidos}, {m.nombres}</span>
-                    <span className="text-[11px] text-[#829087]">{SECTION_LABELS[m.seccion]} · Grupo {m.grupo.numeroGrupo}</span>
+                    <span className="text-[11px] text-faint">{SECTION_LABELS[m.seccion]} · Grupo {m.grupo.numeroGrupo}</span>
                   </span>
-                  <ChevronRight size={16} className="shrink-0 text-[#b2beb5]" />
+                  <ChevronRight size={16} className="shrink-0 text-faint" />
                 </button>
               </li>
             ))}
           </ul>
-          {buscado && results.length === 0 && <p className="mt-2 text-xs text-[#829087]">Sin resultados para “{q}”.</p>}
+          {buscado && results.length === 0 && <p className="mt-2 text-xs text-faint">Sin resultados para “{q}”.</p>}
           {!esTutor && (
-            <p className="mt-4 rounded-lg bg-paper p-3 text-[11px] text-[#718078]">
+            <p className="mt-4 rounded-lg bg-paper p-3 text-[11px] text-muted">
               La aprobación de etapas queda registrada en la bitácora con tu cuenta y notifica al expediente vinculado.
             </p>
           )}
@@ -175,17 +175,17 @@ export default function ProgresionPage() {
           {cargando ? (
             <div className="grid min-h-64 place-items-center"><Loader2 className="animate-spin text-moss" size={30} /></div>
           ) : !seleccionado ? (
-            <div className="grid min-h-64 place-items-center rounded-2xl border border-dashed border-[#cbd8ca] bg-white/50 p-8 text-center">
+            <div className="grid min-h-64 place-items-center rounded-2xl border border-dashed border-line bg-surface/50 p-8 text-center">
               <div>
                 <ShieldCheck className="mx-auto text-moss" size={34} />
                 <p className="mt-3 font-bold">Selecciona un miembro</p>
-                <p className="mt-1 text-sm text-[#829087]">Aquí verás su ruta de progresión, etapas aprobadas e insignias.</p>
+                <p className="mt-1 text-sm text-faint">Aquí verás su ruta de progresión, etapas aprobadas e insignias.</p>
               </div>
             </div>
           ) : (
             <div className="space-y-5">
               {/* Encabezado */}
-              <div className="flex flex-wrap items-start justify-between gap-3 rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft">
+              <div className="flex flex-wrap items-start justify-between gap-3 rounded-2xl border border-line bg-surface p-5 shadow-soft">
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-[.18em] text-clay">{SECTION_LABELS[seleccionado.seccion]} · Grupo {seleccionado.grupo.numeroGrupo}</p>
                   <h2 className="mt-1 font-display text-2xl font-bold">{seleccionado.nombres} {seleccionado.apellidos}</h2>
@@ -195,13 +195,13 @@ export default function ProgresionPage() {
                 </div>
                 <div className="text-right">
                   <div className="font-display text-3xl font-bold text-moss">{pct}%</div>
-                  <div className="text-[10px] font-bold uppercase text-[#829087]">{completadas}/{total} etapas</div>
+                  <div className="text-[10px] font-bold uppercase text-faint">{completadas}/{total} etapas</div>
                 </div>
               </div>
 
               <div className="grid gap-5 xl:grid-cols-[1.3fr_1fr]">
                 {/* Etapas */}
-                <div className="rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft">
+                <div className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
                   <div className="flex items-center justify-between">
                     <h3 className="font-display font-bold">Ruta de progresión</h3>
                     {!esTutor && (
@@ -213,7 +213,7 @@ export default function ProgresionPage() {
                   </div>
                   <ol className="mt-3 space-y-2">
                     {seleccionado.progresiones.length === 0 && (
-                      <li className="rounded-lg bg-paper p-3 text-sm text-[#829087]">Sin etapas registradas. Agrega la primera con “+ Etapa”.</li>
+                      <li className="rounded-lg bg-paper p-3 text-sm text-faint">Sin etapas registradas. Agrega la primera con “+ Etapa”.</li>
                     )}
                     {seleccionado.progresiones.map((p) => (
                       <li key={p.id} className={`flex items-center gap-3 rounded-xl p-3 ${p.completada ? 'bg-fern/40' : 'bg-paper'}`}>
@@ -222,7 +222,7 @@ export default function ProgresionPage() {
                           : <div className="h-[21px] w-[21px] shrink-0 rounded-full border-2 border-[#b9cbbb]" />}
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-bold">{p.etapaNombre}</p>
-                          <p className="text-[10px] text-[#829087]">
+                          <p className="text-[10px] text-faint">
                             {p.completada && p.fechaAprobacion
                               ? `Aprobada ${new Date(p.fechaAprobacion).toLocaleDateString('es-MX')}${p.aprobadaPor ? ` · ${p.aprobadaPor.email}` : ''}`
                               : 'En curso'}
@@ -240,13 +240,13 @@ export default function ProgresionPage() {
                 </div>
 
                 {/* Insignias */}
-                <div className="rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft">
+                <div className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
                   <h3 className="flex items-center gap-2 font-display font-bold"><Medal size={17} className="text-[#c9a227]" /> Insignias</h3>
-                  <p className="mt-2 text-[10px] font-bold uppercase text-[#829087]">Obtenidas ({seleccionado.insigniasObtenidas.length})</p>
+                  <p className="mt-2 text-[10px] font-bold uppercase text-faint">Obtenidas ({seleccionado.insigniasObtenidas.length})</p>
                   <div className="mt-1.5 flex flex-wrap gap-1.5">
-                    {seleccionado.insigniasObtenidas.length === 0 && <span className="text-xs text-[#829087]">Ninguna todavía.</span>}
+                    {seleccionado.insigniasObtenidas.length === 0 && <span className="text-xs text-faint">Ninguna todavía.</span>}
                     {seleccionado.insigniasObtenidas.map((io) => (
-                      <span key={io.id} className="rounded-full bg-[#fff8e7] px-2.5 py-1 text-[11px] font-bold text-[#7a5a06]" title={io.insignia.categoria ?? ''}>
+                      <span key={io.id} className="rounded-full bg-warnsoft px-2.5 py-1 text-[11px] font-bold text-warn" title={io.insignia.categoria ?? ''}>
                         🏅 {io.insignia.nombre}
                       </span>
                     ))}
@@ -254,25 +254,25 @@ export default function ProgresionPage() {
 
                   {!esTutor && (
                     <>
-                      <p className="mt-4 text-[10px] font-bold uppercase text-[#829087]">Otorgar del catálogo</p>
-                      <ul className="mt-1.5 max-h-64 divide-y divide-[#f0f4ef] overflow-y-auto">
+                      <p className="mt-4 text-[10px] font-bold uppercase text-faint">Otorgar del catálogo</p>
+                      <ul className="mt-1.5 max-h-64 divide-y divide-line overflow-y-auto">
                         {catalogo.map((ins) => {
                           const yaLaTiene = obtenidasIds.has(ins.id);
                           return (
                             <li key={ins.id} className="flex items-center justify-between gap-2 py-2">
                               <span className="min-w-0">
                                 <span className="block truncate text-xs font-semibold">{ins.nombre}</span>
-                                <span className="text-[10px] text-[#a3b0a8]">{ins.categoria ?? 'General'}</span>
+                                <span className="text-[10px] text-faint">{ins.categoria ?? 'General'}</span>
                               </span>
                               <button onClick={() => void otorgar(ins.id)} disabled={yaLaTiene}
-                                className="flex shrink-0 items-center gap-1 rounded-lg border border-[#dfe7dc] px-2 py-1.5 text-[10px] font-bold text-moss hover:bg-fern disabled:opacity-40">
+                                className="flex shrink-0 items-center gap-1 rounded-lg border border-linestrong px-2 py-1.5 text-[10px] font-bold text-moss hover:bg-fern disabled:opacity-40">
                                 {yaLaTiene ? <BadgeCheck size={12} /> : <Award size={12} />}
                                 {yaLaTiene ? 'Tiene' : 'Otorgar'}
                               </button>
                             </li>
                           );
                         })}
-                        {catalogo.length === 0 && <li className="py-2 text-xs text-[#829087]">Catálogo vacío para esta sección.</li>}
+                        {catalogo.length === 0 && <li className="py-2 text-xs text-faint">Catálogo vacío para esta sección.</li>}
                       </ul>
                     </>
                   )}
@@ -325,17 +325,17 @@ function NuevaEtapaModal({ scoutProfileId, seccion, onClose, onCreada }: {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4" role="dialog" aria-modal aria-label="Nueva etapa">
-      <form onSubmit={(e) => void submit(e)} className="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-soft">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-panel/50 p-4" role="dialog" aria-modal aria-label="Nueva etapa">
+      <form onSubmit={(e) => void submit(e)} className="w-full max-w-md space-y-4 rounded-2xl bg-surface p-6 shadow-soft">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-bold">Nueva etapa · {SECTION_LABELS[seccion]}</h3>
-          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-[#829087] hover:bg-paper"><X size={18} /></button>
+          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-faint hover:bg-paper"><X size={18} /></button>
         </div>
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
         <input required autoFocus value={etapaNombre} onChange={(e) => setEtapaNombre(e.target.value)} placeholder="Nombre de la etapa *"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} rows={2} placeholder="Descripción y criterios de logro…"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <button type="submit" disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-moss py-3 text-sm font-bold text-white disabled:opacity-60">
           {loading && <Loader2 className="animate-spin" size={16} />} Crear etapa

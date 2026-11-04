@@ -56,30 +56,30 @@ export function NuevoEventoModal({ onClose, onCreated }: { onClose: () => void; 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-ink/50 p-4" role="dialog" aria-modal aria-label="Nuevo evento">
-      <form onSubmit={(e) => void submit(e)} className="my-6 w-full max-w-lg space-y-4 rounded-2xl bg-white p-6 shadow-soft">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-panel/50 p-4" role="dialog" aria-modal aria-label="Nuevo evento">
+      <form onSubmit={(e) => void submit(e)} className="my-6 w-full max-w-lg space-y-4 rounded-2xl bg-surface p-6 shadow-soft">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-bold">Nuevo evento</h3>
-          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-[#829087] hover:bg-paper"><X size={18} /></button>
+          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-faint hover:bg-paper"><X size={18} /></button>
         </div>
 
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
 
         <input required value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre del evento *"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} placeholder="Descripción (objetivos, qué traer…)" rows={2}
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
 
         <div className="grid grid-cols-2 gap-2">
-          <label className="text-xs font-bold text-[#5c6f63]">Tipo
+          <label className="text-xs font-bold text-muted">Tipo
             <select value={tipo} onChange={(e) => setTipo(e.target.value as TipoEvento)}
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
               {Object.entries(TIPO_EVENTO_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </select>
           </label>
-          <label className="text-xs font-bold text-[#5c6f63]">Alcance
+          <label className="text-xs font-bold text-muted">Alcance
             <select value={alcance} onChange={(e) => setAlcance(e.target.value as 'NACIONAL' | 'GRUPO')}
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
               <option value="NACIONAL">Nacional / Abierto</option>
               <option value="GRUPO">Solo mi grupo</option>
             </select>
@@ -88,33 +88,33 @@ export function NuevoEventoModal({ onClose, onCreated }: { onClose: () => void; 
 
         {alcance === 'GRUPO' && (
           <select required value={grupoId} onChange={(e) => setGrupoId(e.target.value)}
-            className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             <option value="">Selecciona el grupo…</option>
             {grupos.map((g) => <option key={g.id} value={g.id}>Grupo {g.numeroGrupo} — {g.nombre}</option>)}
           </select>
         )}
 
         <div className="grid grid-cols-2 gap-2">
-          <label className="text-xs font-bold text-[#5c6f63]">Inicia *
+          <label className="text-xs font-bold text-muted">Inicia *
             <input required type="datetime-local" value={fechaInicio} onChange={(e) => setFechaInicio(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
           </label>
-          <label className="text-xs font-bold text-[#5c6f63]">Termina *
+          <label className="text-xs font-bold text-muted">Termina *
             <input required type="datetime-local" value={fechaFin} onChange={(e) => setFechaFin(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
           </label>
         </div>
 
         <input value={lugar} onChange={(e) => setLugar(e.target.value)} placeholder="Lugar / sede"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
 
         <label className="flex items-center justify-between gap-4 text-sm font-bold">
           Cupo máximo (opcional)
           <input type="number" min="1" value={cupoMaximo} onChange={(e) => setCupoMaximo(e.target.value)} placeholder="∞"
-            className="w-28 rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+            className="w-28 rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         </label>
 
-        <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-[#dfe7dc] p-3 text-sm font-bold">
+        <label className="flex cursor-pointer items-center justify-between gap-4 rounded-lg border border-linestrong p-3 text-sm font-bold">
           <span>Requiere autorización parental firmada</span>
           <input type="checkbox" checked={requiereAutorizacion} onChange={(e) => setRequiereAutorizacion(e.target.checked)}
             className="h-5 w-5 accent-[#2b6a50]" />

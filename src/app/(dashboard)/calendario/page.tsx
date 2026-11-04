@@ -78,7 +78,7 @@ export default function CalendarioPage() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Agenda nacional</p>
           <h1 className="mt-2 font-display text-3xl font-bold">Calendario</h1>
-          <p className="mt-1 text-sm text-[#718078]">Todos los eventos de la asociación en una sola vista.</p>
+          <p className="mt-1 text-sm text-muted">Todos los eventos de la asociación en una sola vista.</p>
         </div>
         <Link href="/eventos" className="flex w-fit items-center gap-2 rounded-lg bg-moss px-4 py-2.5 text-sm font-bold text-white">
           <CalendarDays size={17} /> Nuevo evento
@@ -87,7 +87,7 @@ export default function CalendarioPage() {
 
       <div className="grid gap-6 xl:grid-cols-[1.6fr_1fr]">
         {/* ─── Mes ─── */}
-        <section className="rounded-2xl border border-[#e2e9df] bg-white p-4 shadow-soft sm:p-6">
+        <section className="rounded-2xl border border-line bg-surface p-4 shadow-soft sm:p-6">
           <div className="mb-4 flex items-center justify-between">
             <button onClick={() => setCursor((c) => new Date(c.getFullYear(), c.getMonth() - 1, 1))}
               aria-label="Mes anterior" className="rounded-lg p-2 hover:bg-paper"><ChevronLeft size={19} /></button>
@@ -96,7 +96,7 @@ export default function CalendarioPage() {
               aria-label="Mes siguiente" className="rounded-lg p-2 hover:bg-paper"><ChevronRight size={19} /></button>
           </div>
 
-          <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase tracking-widest text-[#a3b0a8]">
+          <div className="grid grid-cols-7 gap-1 text-center text-[10px] font-bold uppercase tracking-widest text-faint">
             {WEEKDAYS.map((d) => <div key={d} className="py-1">{d}</div>)}
           </div>
 
@@ -113,23 +113,23 @@ export default function CalendarioPage() {
                   aria-pressed={activo}
                   aria-label={`${day} — ${delDia.length} evento(s)`}
                   className={`min-h-16 rounded-lg border p-1.5 text-left align-top transition-colors ${
-                    activo ? 'border-moss bg-fern/50' : delDia.length > 0 ? 'border-[#e2e9df] bg-white hover:border-moss' : 'border-transparent hover:bg-paper'
+                    activo ? 'border-moss bg-fern/50' : delDia.length > 0 ? 'border-line bg-surface hover:border-moss' : 'border-transparent hover:bg-paper'
                   }`}
                 >
-                  <span className={`text-xs font-bold ${esHoy ? 'grid h-6 w-6 place-items-center rounded-full bg-moss text-white' : 'text-[#5c6f63]'}`}>
+                  <span className={`text-xs font-bold ${esHoy ? 'grid h-6 w-6 place-items-center rounded-full bg-moss text-white' : 'text-muted'}`}>
                     {day}
                   </span>
                   <div className="mt-1 space-y-0.5">
                     {delDia.slice(0, 2).map((ev) => (
                       <span key={ev.id}
                         className={`block truncate rounded px-1 py-0.5 text-[9px] font-bold leading-tight ${
-                          ev.tipo === 'CAMPAMENTO' ? 'bg-[#fff3d6] text-[#8a6a10]' : 'bg-fern text-moss'
+                          ev.tipo === 'CAMPAMENTO' ? 'bg-[#fff3d6] text-warn' : 'bg-fern text-moss'
                         }`}>
                         {ev.nombre}
                       </span>
                     ))}
                     {delDia.length > 2 && (
-                      <span className="block px-1 text-[9px] font-bold text-[#829087]">+{delDia.length - 2} más</span>
+                      <span className="block px-1 text-[9px] font-bold text-faint">+{delDia.length - 2} más</span>
                     )}
                   </div>
                 </button>
@@ -140,36 +140,36 @@ export default function CalendarioPage() {
 
         {/* ─── Detalle del día / próximos ─── */}
         <aside className="space-y-4">
-          <div className="rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft">
+          <div className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
             <h2 className="font-display font-bold">
               {seleccionado
                 ? new Date(`${seleccionado}T12:00:00`).toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long' })
                 : 'Próximos eventos'}
             </h2>
             <div className="mt-3 space-y-2">
-              {loading && <p className="text-sm text-[#829087]">Cargando…</p>}
+              {loading && <p className="text-sm text-faint">Cargando…</p>}
               {!loading && (seleccionado ? eventosSeleccionados : eventos.filter((e) => +new Date(e.fechaInicio) >= Date.now()).slice(0, 6)).map((ev) => (
                 <Link key={ev.id} href="/eventos"
-                  className="flex items-start gap-3 rounded-xl border border-[#edf0ea] p-3 transition-colors hover:border-moss">
+                  className="flex items-start gap-3 rounded-xl border border-line p-3 transition-colors hover:border-moss">
                   <div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-fern text-moss">
                     <Tent size={18} />
                   </div>
                   <div className="min-w-0">
                     <p className="text-sm font-bold leading-snug">{ev.nombre}</p>
-                    <p className="mt-0.5 text-[11px] text-[#829087]">
+                    <p className="mt-0.5 text-[11px] text-faint">
                       {new Date(ev.fechaInicio).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' })}
                       {ev.lugar && <span className="block"><MapPin size={10} className="mr-0.5 inline" />{ev.lugar}</span>}
                     </p>
-                    <span className="mt-1 inline-block rounded-full bg-paper px-2 py-0.5 text-[9px] font-bold uppercase text-[#5c6f63]">{TIPO_EVENTO_LABELS[ev.tipo]}</span>
+                    <span className="mt-1 inline-block rounded-full bg-paper px-2 py-0.5 text-[9px] font-bold uppercase text-muted">{TIPO_EVENTO_LABELS[ev.tipo]}</span>
                   </div>
                 </Link>
               ))}
               {!loading && (seleccionado ? eventosSeleccionados : eventos.filter((e) => +new Date(e.fechaInicio) >= Date.now())).length === 0 && (
-                <p className="rounded-xl bg-paper p-4 text-center text-sm text-[#829087]">Nada programado.</p>
+                <p className="rounded-xl bg-paper p-4 text-center text-sm text-faint">Nada programado.</p>
               )}
             </div>
           </div>
-          <div className="rounded-2xl bg-ink p-5 text-sm text-[#c9d8cd]">
+          <div className="rounded-2xl bg-panel p-5 text-sm text-[#c9d8cd]">
             <p className="font-bold uppercase tracking-widest text-[#8fb59e] text-[10px]">Tip de campo</p>
             <p className="mt-1.5">Los campamentos nacionales se programan con al menos 8 semanas de anticipación. Asegúrate de tener lista la responsiva firmada antes de abrir inscripciones.</p>
           </div>

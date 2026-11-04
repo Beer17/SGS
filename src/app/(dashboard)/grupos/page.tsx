@@ -51,7 +51,7 @@ export default function GruposPage() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Estructura territorial</p>
           <h1 className="mt-2 font-display text-3xl font-bold">Grupos scout</h1>
-          <p className="mt-1 text-sm text-[#718078]">{grupos.length} grupo(s) activos en {provincias.length} provincia(s).</p>
+          <p className="mt-1 text-sm text-muted">{grupos.length} grupo(s) activos en {provincias.length} provincia(s).</p>
         </div>
         {puedeCrear && (
           <button onClick={() => setModalNuevo(true)}
@@ -61,7 +61,7 @@ export default function GruposPage() {
         )}
       </div>
 
-      {error && <div role="alert" className="mb-4 rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
+      {error && <div role="alert" className="mb-4 rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
 
       {loading ? (
         <div className="grid min-h-48 place-items-center"><Loader2 className="animate-spin text-moss" /></div>
@@ -72,19 +72,19 @@ export default function GruposPage() {
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="flex items-center gap-2 font-display text-lg font-bold">
                   <span className="h-2.5 w-2.5 rounded-full bg-moss" /> {provincia.nombre}
-                  <span className="text-xs font-sans font-semibold text-[#829087]">· Región {provincia.region} · {gs.length} grupo(s)</span>
+                  <span className="text-xs font-sans font-semibold text-faint">· Región {provincia.region} · {gs.length} grupo(s)</span>
                 </h2>
               </div>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 {gs.map((g) => (
                   <Link key={g.id} href={`/censo?grupoId=${g.id}`}
-                    className="group rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft transition-colors hover:border-moss">
+                    className="group rounded-2xl border border-line bg-surface p-5 shadow-soft transition-colors hover:border-moss">
                     <div className="flex items-start justify-between">
                       <span className="grid h-11 w-11 place-items-center rounded-xl bg-fern text-moss"><Building2 size={20} /></span>
-                      <span className="rounded-full bg-paper px-2.5 py-1 text-[10px] font-bold uppercase text-[#5c6f63]">Grupo {g.numeroGrupo}</span>
+                      <span className="rounded-full bg-paper px-2.5 py-1 text-[10px] font-bold uppercase text-muted">Grupo {g.numeroGrupo}</span>
                     </div>
                     <h3 className="mt-4 font-display text-lg font-bold leading-snug group-hover:text-moss">{g.nombre}</h3>
-                    <p className="mt-4 flex items-center gap-2 text-xs font-bold text-[#718078]">
+                    <p className="mt-4 flex items-center gap-2 text-xs font-bold text-muted">
                       <Users size={14} /> {g._count.scouts} miembro(s) registrado(s)
                     </p>
                   </Link>
@@ -93,7 +93,7 @@ export default function GruposPage() {
             </section>
           ))}
           {porProvincia.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-[#cbd8ca] bg-white p-10 text-center text-sm text-[#829087]">
+            <div className="rounded-2xl border border-dashed border-line bg-surface p-10 text-center text-sm text-faint">
               Aún no hay grupos registrados.
             </div>
           )}
@@ -144,26 +144,26 @@ function NuevoGrupoModal({ provincias, onClose, onCreado }: {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4" role="dialog" aria-modal aria-label="Nuevo grupo">
-      <form onSubmit={(e) => void submit(e)} className="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-soft">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-panel/50 p-4" role="dialog" aria-modal aria-label="Nuevo grupo">
+      <form onSubmit={(e) => void submit(e)} className="w-full max-w-md space-y-4 rounded-2xl bg-surface p-6 shadow-soft">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-bold">Nuevo grupo scout</h3>
-          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-[#829087] hover:bg-paper"><X size={18} /></button>
+          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-faint hover:bg-paper"><X size={18} /></button>
         </div>
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
         <div className="grid grid-cols-[110px_1fr] gap-2">
-          <label className="text-xs font-bold text-[#5c6f63]">Número
+          <label className="text-xs font-bold text-muted">Número
             <input required type="number" min="1" value={numeroGrupo} onChange={(e) => setNumeroGrupo(e.target.value)} placeholder="12"
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
           </label>
-          <label className="text-xs font-bold text-[#5c6f63]">Nombre del grupo
+          <label className="text-xs font-bold text-muted">Nombre del grupo
             <input required value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Halcones de…"
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
           </label>
         </div>
-        <label className="block text-xs font-bold text-[#5c6f63]">Provincia
+        <label className="block text-xs font-bold text-muted">Provincia
           <select required value={provinciaId} onChange={(e) => setProvinciaId(e.target.value)}
-            className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             <option value="">Selecciona…</option>
             {provincias.map((p) => <option key={p.id} value={p.id}>{p.nombre} · {p.region}</option>)}
           </select>

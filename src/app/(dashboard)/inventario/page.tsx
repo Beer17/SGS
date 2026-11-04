@@ -95,11 +95,11 @@ export default function InventarioPage() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Administración</p>
           <h1 className="mt-2 font-display text-3xl font-bold">Inventario del grupo</h1>
-          <p className="mt-1 text-sm text-[#718078]">Equipo, materiales y préstamos. Valor total: <span className="font-bold text-ink">{formatCurrency(valorTotal)}</span></p>
+          <p className="mt-1 text-sm text-muted">Equipo, materiales y préstamos. Valor total: <span className="font-bold text-ink">{formatCurrency(valorTotal)}</span></p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <select aria-label="Grupo" value={grupoId} onChange={(e) => setGrupoId(e.target.value)}
-            className="rounded-lg border border-[#dfe7dc] bg-white px-3 py-2.5 text-sm font-semibold outline-none focus:border-moss">
+            className="rounded-lg border border-linestrong bg-surface px-3 py-2.5 text-sm font-semibold outline-none focus:border-moss">
             {grupos.map((g) => <option key={g.id} value={g.id}>Grupo {g.numeroGrupo} — {g.nombre}</option>)}
           </select>
           <button onClick={() => setModalAgregar(true)}
@@ -109,9 +109,9 @@ export default function InventarioPage() {
         </div>
       </div>
 
-      {error && <div role="alert" className="mb-4 rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
+      {error && <div role="alert" className="mb-4 rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
       {prestamosVencidos > 0 && (
-        <div className="mb-4 flex items-center gap-2 rounded-lg bg-[#fff5d9] px-4 py-3 text-sm font-semibold text-[#7a5a06]">
+        <div className="mb-4 flex items-center gap-2 rounded-lg bg-warnsoft px-4 py-3 text-sm font-semibold text-warn">
           <AlertTriangle size={17} /> {prestamosVencidos} préstamo(s) con más de {DIAS_PRESTAMO_ALERTA} días sin devolver.
         </div>
       )}
@@ -130,14 +130,14 @@ export default function InventarioPage() {
 
       {/* Buscador */}
       <div className="relative mb-4 max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#91a097]" size={17} />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-faint" size={17} />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por nombre o categoría…"
           aria-label="Buscar en inventario"
-          className="w-full rounded-lg border border-[#dfe7dc] bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong bg-surface py-2.5 pl-10 pr-4 text-sm outline-none focus:border-moss" />
       </div>
 
       {/* Tabla */}
-      <div className="overflow-hidden rounded-2xl border border-[#e2e9df] bg-white shadow-soft">
+      <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
         {loading ? (
           <div className="grid min-h-48 place-items-center"><Loader2 className="animate-spin text-moss" /></div>
         ) : itemsFiltrados.length === 0 ? (
@@ -145,14 +145,14 @@ export default function InventarioPage() {
             <div>
               <Package className="mx-auto mb-3 text-moss" size={30} />
               <p className="font-bold">Sin ítems{q || estadoFiltro ? ' con ese filtro' : ''}</p>
-              <p className="mt-1 text-sm text-[#829087]">Agrega el primer elemento con “Agregar ítem”.</p>
+              <p className="mt-1 text-sm text-faint">Agrega el primer elemento con “Agregar ítem”.</p>
             </div>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-sm">
               <thead>
-                <tr className="border-b border-[#edf0ea] text-left text-[11px] font-bold uppercase tracking-wider text-[#829087]">
+                <tr className="border-b border-line text-left text-[11px] font-bold uppercase tracking-wider text-faint">
                   <th className="px-5 py-3">Nombre</th>
                   <th className="hidden px-5 py-3 md:table-cell">Categoría</th>
                   <th className="px-5 py-3">Cant.</th>
@@ -162,7 +162,7 @@ export default function InventarioPage() {
                   <th className="px-5 py-3 text-right">Acción</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#f0f4ef]">
+              <tbody className="divide-y divide-line">
                 {itemsFiltrados.map((item) => {
                   const prestamo = item.prestamos[0];
                   const dias = prestamo ? Math.floor((Date.now() - +new Date(prestamo.fechaPrestamo)) / 86_400_000) : null;
@@ -171,11 +171,11 @@ export default function InventarioPage() {
                     <tr key={item.id} className="transition-colors hover:bg-paper">
                       <td className="px-5 py-3">
                         <div className="font-semibold">{item.nombre}</div>
-                        {item.ubicacion && <div className="text-[11px] text-[#a3b0a8]">📍 {item.ubicacion}</div>}
+                        {item.ubicacion && <div className="text-[11px] text-faint">📍 {item.ubicacion}</div>}
                       </td>
-                      <td className="hidden px-5 py-3 text-[#718078] md:table-cell">{item.categoria ?? '—'}</td>
+                      <td className="hidden px-5 py-3 text-muted md:table-cell">{item.categoria ?? '—'}</td>
                       <td className="px-5 py-3 font-mono">{item.cantidad}</td>
-                      <td className="hidden px-5 py-3 text-[#718078] lg:table-cell">
+                      <td className="hidden px-5 py-3 text-muted lg:table-cell">
                         {item.valorUnitario != null ? formatCurrency(Number(item.valorUnitario)) : '—'}
                       </td>
                       <td className="px-5 py-3">
@@ -185,7 +185,7 @@ export default function InventarioPage() {
                         {prestamo ? (
                           <>
                             <span className="font-semibold">{prestamo.prestatarioNombre}</span>
-                            <span className={`block ${vencido ? 'font-bold text-clay' : 'text-[#829087]'}`}>hace {dias} día(s)</span>
+                            <span className={`block ${vencido ? 'font-bold text-clay' : 'text-faint'}`}>hace {dias} día(s)</span>
                           </>
                         ) : '—'}
                       </td>
@@ -228,11 +228,11 @@ export default function InventarioPage() {
 /* ─── Modal shell ─────────────────────────────────────────────────────────── */
 function ModalShell({ title, children, onClose }: { title: string; children: React.ReactNode; onClose: () => void }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4" role="dialog" aria-modal aria-label={title}>
-      <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-soft">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-panel/50 p-4" role="dialog" aria-modal aria-label={title}>
+      <div className="w-full max-w-md rounded-2xl bg-surface p-6 shadow-soft">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-display text-lg font-bold">{title}</h3>
-          <button onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-[#829087] hover:bg-paper"><X size={18} /></button>
+          <button onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-faint hover:bg-paper"><X size={18} /></button>
         </div>
         {children}
       </div>
@@ -275,23 +275,23 @@ function AgregarItemModal({ grupoId, onClose, onSaved }: { grupoId: string; onCl
   return (
     <ModalShell title="Agregar ítem" onClose={onClose}>
       <form onSubmit={(e) => void submit(e)} className="space-y-3">
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
         <input required value={nombre} onChange={(e) => setNombre(e.target.value)} placeholder="Nombre del ítem *"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <input value={categoria} onChange={(e) => setCategoria(e.target.value)} placeholder="Categoría (Camping, Cocina…)"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <div className="grid grid-cols-2 gap-2">
-          <label className="text-xs font-bold text-[#5c6f63]">Cantidad
+          <label className="text-xs font-bold text-muted">Cantidad
             <input required type="number" min="1" value={cantidad} onChange={(e) => setCantidad(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
           </label>
-          <label className="text-xs font-bold text-[#5c6f63]">Valor unitario MXN
+          <label className="text-xs font-bold text-muted">Valor unitario MXN
             <input type="number" min="0" step="0.01" value={valorUnitario} onChange={(e) => setValorUnitario(e.target.value)} placeholder="0.00"
-              className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+              className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
           </label>
         </div>
         <input value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} placeholder="Ubicación (Bodega parroquia…)"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <button type="submit" disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-moss py-3 text-sm font-bold text-white disabled:opacity-60">
           {loading && <Loader2 className="animate-spin" size={16} />} Guardar ítem
@@ -327,13 +327,13 @@ function PrestarModal({ item, onClose, onSaved }: { item: ItemRow; onClose: () =
   return (
     <ModalShell title={`Prestar: ${item.nombre}`} onClose={onClose}>
       <form onSubmit={(e) => void submit(e)} className="space-y-3">
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
         <input required autoFocus value={prestatarioNombre} onChange={(e) => setPrestatarioNombre(e.target.value)}
           placeholder="¿Quién lo recibe? (nombre y grupo) *"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <textarea value={observaciones} onChange={(e) => setObservaciones(e.target.value)} rows={2}
           placeholder="Observaciones (para qué, fecha de devolución estimada…)"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <button type="submit" disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-moss py-3 text-sm font-bold text-white disabled:opacity-60">
           {loading && <Loader2 className="animate-spin" size={16} />} Registrar préstamo
@@ -370,15 +370,15 @@ function DevolverModal({ item, onClose, onSaved }: { item: ItemRow; onClose: () 
   return (
     <ModalShell title={`Devolver: ${item.nombre}`} onClose={onClose}>
       <form onSubmit={(e) => void submit(e)} className="space-y-3">
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
         {prestamo && (
-          <p className="rounded-lg bg-paper px-3 py-2 text-xs text-[#5c6f63]">
+          <p className="rounded-lg bg-paper px-3 py-2 text-xs text-muted">
             Prestado a <span className="font-bold">{prestamo.prestatarioNombre}</span> el{' '}
             {new Date(prestamo.fechaPrestamo).toLocaleDateString('es-MX')}.
           </p>
         )}
         <fieldset>
-          <legend className="text-xs font-bold uppercase text-[#829087]">Estado al devolver</legend>
+          <legend className="text-xs font-bold uppercase text-faint">Estado al devolver</legend>
           <div className="mt-1.5 grid grid-cols-3 gap-2">
             {([
               ['DISPONIBLE', 'Buen estado'],
@@ -386,7 +386,7 @@ function DevolverModal({ item, onClose, onSaved }: { item: ItemRow; onClose: () 
               ['DANADO', 'Dañado'],
             ] as const).map(([valor, label]) => (
               <label key={valor}
-                className={`cursor-pointer rounded-lg border p-2.5 text-center text-[11px] font-bold ${estadoFinal === valor ? 'border-moss bg-fern text-moss' : 'border-[#dfe7dc] text-[#718078]'}`}>
+                className={`cursor-pointer rounded-lg border p-2.5 text-center text-[11px] font-bold ${estadoFinal === valor ? 'border-moss bg-fern text-moss' : 'border-linestrong text-muted'}`}>
                 <input type="radio" name="estadoFinal" value={valor} checked={estadoFinal === valor}
                   onChange={() => setEstadoFinal(valor)} className="sr-only" />
                 {label}
@@ -396,7 +396,7 @@ function DevolverModal({ item, onClose, onSaved }: { item: ItemRow; onClose: () 
         </fieldset>
         <textarea value={observaciones} onChange={(e) => setObservaciones(e.target.value)} rows={2}
           placeholder="Observaciones de la devolución…"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <button type="submit" disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-moss py-3 text-sm font-bold text-white disabled:opacity-60">
           {loading ? <Loader2 className="animate-spin" size={16} /> : <CheckCircle2 size={16} />} Confirmar devolución

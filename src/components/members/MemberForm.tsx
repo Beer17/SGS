@@ -123,7 +123,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
 
   if (loadingData) {
     return (
-      <div className="grid min-h-64 place-items-center text-sm text-[#829087]">
+      <div className="grid min-h-64 place-items-center text-sm text-faint">
         Cargando expediente…
       </div>
     );
@@ -132,7 +132,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
   return (
     <form onSubmit={(e) => void handleSubmit(e)} className="max-w-3xl space-y-5">
       {error && (
-        <div role="alert" className="rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">
+        <div role="alert" className="rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">
           {error}
         </div>
       )}
@@ -141,12 +141,12 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
         <label className="block text-sm font-bold">
           Nombres *
           <input required value={nombres} onChange={(e) => setNombres(e.target.value)}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         </label>
         <label className="block text-sm font-bold">
           Apellidos *
           <input required value={apellidos} onChange={(e) => setApellidos(e.target.value)}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         </label>
       </div>
 
@@ -155,12 +155,12 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
           CURP (18 caracteres)
           <input value={curp} maxLength={18} onChange={(e) => setCurp(e.target.value.toUpperCase())}
             placeholder="GODL950101HDFXYZ01"
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 font-mono text-sm uppercase outline-none focus:border-moss" />
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 font-mono text-sm uppercase outline-none focus:border-moss" />
         </label>
         <label className="block text-sm font-bold">
           Fecha de nacimiento *
           <input required type="date" value={fechaNacimiento} onChange={(e) => setFechaNacimiento(e.target.value)}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         </label>
       </div>
 
@@ -168,14 +168,14 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
         <label className="block text-sm font-bold">
           Sección *
           <select required value={seccion} onChange={(e) => { setSeccion(e.target.value); if (e.target.value !== 'TROPA') setRama(''); }}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             {SECTIONS.map((s) => <option key={s} value={s}>{SECTION_LABELS[s]}</option>)}
           </select>
         </label>
         <label className="block text-sm font-bold">
           Grupo *
           <select required value={grupoId} onChange={(e) => setGrupoId(e.target.value)}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             <option value="">Selecciona…</option>
             {grupos.map((g) => (
               <option key={g.id} value={g.id}>
@@ -190,7 +190,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
         <label className="block text-sm font-bold">
           Rama de la Tropa (opcional)
           <select value={rama} onChange={(e) => setRama(e.target.value)}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             <option value="">Tropa regular (11–14 años)</option>
             <option value="COMUNIDAD">Comunidad (15–17 años)</option>
           </select>
@@ -202,13 +202,13 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
           Teléfono de contacto
           <input value={telefono} onChange={(e) => setTelefono(e.target.value)} inputMode="tel"
             placeholder="55 1234 5678"
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         </label>
         <label className="block text-sm font-bold">
           Ciclo activo
           <input value={cicloActivo} onChange={(e) => setCicloActivo(e.target.value)}
             placeholder="2026-2027"
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         </label>
       </div>
 
@@ -216,14 +216,14 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
         Dirección
         <input value={direccion} onChange={(e) => setDireccion(e.target.value)}
           placeholder="Calle y número, colonia, municipio"
-          className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
       </label>
 
       {mode === 'edit' && (
         <label className="block text-sm font-bold">
           Estatus de registro
           <select value={estatusRegistro} onChange={(e) => setEstatusRegistro(e.target.value)}
-            className="mt-1.5 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="mt-1.5 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             <option value="ACTIVO">ACTIVO</option>
             <option value="PENDIENTE">PENDIENTE</option>
             <option value="VENCIDO">VENCIDO</option>
@@ -239,7 +239,7 @@ export function MemberForm({ mode, scoutId }: { mode: 'create' | 'edit'; scoutId
           {mode === 'create' ? 'Registrar miembro' : 'Guardar cambios'}
         </button>
         <Link href={mode === 'create' ? '/censo' : `/ficha/${scoutId}`}
-          className="flex w-fit items-center gap-2 rounded-lg border border-[#dfe7dc] px-5 py-3 text-sm font-bold text-[#5c6f63] hover:bg-paper">
+          className="flex w-fit items-center gap-2 rounded-lg border border-linestrong px-5 py-3 text-sm font-bold text-muted hover:bg-paper">
           <X size={17} /> Cancelar
         </Link>
       </div>

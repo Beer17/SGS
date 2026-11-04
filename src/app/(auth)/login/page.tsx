@@ -40,17 +40,17 @@ function LoginForm() {
 
   return (
     <main className="grid min-h-screen place-items-center bg-paper p-6">
-      <div className="w-full max-w-md rounded-2xl border border-[#e2e9df] bg-white p-8 shadow-soft">
+      <div className="w-full max-w-md rounded-2xl border border-line bg-surface p-8 shadow-soft">
         <div className="mb-8 flex items-center gap-3">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-moss font-bold text-white">S</div>
           <div className="font-display text-xl font-bold">SISAS <span className="text-clay">ANSI</span></div>
         </div>
 
         <h1 className="font-display text-2xl font-bold">Bienvenido de vuelta</h1>
-        <p className="mt-2 text-sm text-[#718078]">Accede al panel de administración scout.</p>
+        <p className="mt-2 text-sm text-muted">Accede al panel de administración scout.</p>
 
         {error && (
-          <div role="alert" className="mt-4 rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">
+          <div role="alert" className="mt-4 rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">
             {error}
           </div>
         )}
@@ -62,7 +62,7 @@ function LoginForm() {
               required type="email" name="email" autoComplete="email" value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@asociacion.org"
-              className="mt-2 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss"
+              className="mt-2 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss"
             />
           </label>
           <label className="block text-sm font-bold">
@@ -71,7 +71,7 @@ function LoginForm() {
               required minLength={8} type="password" name="password" autoComplete="current-password" value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="mt-2 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss"
+              className="mt-2 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss"
             />
           </label>
           <button
@@ -82,8 +82,8 @@ function LoginForm() {
           </button>
         </form>
 
-        <div className="mt-6 rounded-xl bg-paper p-4 text-xs text-[#5c6f63]">
-          <p className="font-bold uppercase tracking-wide text-[#829087]">Cuentas de demostración</p>
+        <div className="mt-6 rounded-xl bg-paper p-4 text-xs text-muted">
+          <p className="font-bold uppercase tracking-wide text-faint">Cuentas de demostración</p>
           <ul className="mt-2 space-y-1 font-mono">
             <li>admin@gmail.com · admin1234 <span className="text-moss">(Admin)</span></li>
             <li>jefe@sisas.ansi · Jefe2026! <span className="text-moss">(Jefe de grupo)</span></li>
@@ -92,7 +92,7 @@ function LoginForm() {
           </ul>
         </div>
 
-        <p className="mt-4 text-center text-xs text-[#829087]">
+        <p className="mt-4 text-center text-xs text-faint">
           ¿Aún no tienes acceso?{' '}
           <Link href="/register" className="font-bold text-moss">Solicítalo aquí</Link>
         </p>

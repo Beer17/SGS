@@ -66,16 +66,16 @@ export default function ConfiguracionPage() {
       <div className="mb-6">
         <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Sistema</p>
         <h1 className="mt-2 font-display text-3xl font-bold">Configuración</h1>
-        <p className="mt-1 text-sm text-[#718078]">Cuentas de acceso, roles y preferencias del portal.</p>
+        <p className="mt-1 text-sm text-muted">Cuentas de acceso, roles y preferencias del portal.</p>
       </div>
 
-      {error && <div role="alert" className="mb-4 rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
+      {error && <div role="alert" className="mb-4 rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
       {mensaje && <div role="status" className="mb-4 rounded-lg bg-fern px-4 py-3 text-sm font-bold text-moss">{mensaje}</div>}
 
       <div className="grid gap-6 xl:grid-cols-[1.3fr_1fr]">
         {/* ─── Cuentas ─── */}
         {puedeVerUsuarios && (
-          <section className="rounded-2xl border border-[#e2e9df] bg-white p-6 shadow-soft">
+          <section className="rounded-2xl border border-line bg-surface p-6 shadow-soft">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 className="flex items-center gap-2 font-display text-lg font-bold"><Users2 size={19} className="text-moss" /> Cuentas del sistema</h2>
               {esAdmin && (
@@ -87,28 +87,28 @@ export default function ConfiguracionPage() {
             </div>
             <div className="mt-4 overflow-x-auto">
               <table className="w-full min-w-[560px] text-sm">
-                <thead className="text-left text-[11px] uppercase tracking-wider text-[#829087]">
-                  <tr className="border-b border-[#edf0ea]"><th className="pb-2">Cuenta</th><th className="pb-2">Rol</th><th className="pb-2">Último acceso</th><th className="pb-2 text-right">Estado</th></tr>
+                <thead className="text-left text-[11px] uppercase tracking-wider text-faint">
+                  <tr className="border-b border-line"><th className="pb-2">Cuenta</th><th className="pb-2">Rol</th><th className="pb-2">Último acceso</th><th className="pb-2 text-right">Estado</th></tr>
                 </thead>
-                <tbody className="divide-y divide-[#f0f4ef]">
-                  {usuarios === null && <tr><td colSpan={4} className="py-6 text-center text-[#829087]">Cargando…</td></tr>}
+                <tbody className="divide-y divide-line">
+                  {usuarios === null && <tr><td colSpan={4} className="py-6 text-center text-faint">Cargando…</td></tr>}
                   {usuarios?.map((u) => (
                     <tr key={u.id}>
                       <td className="py-2.5">
                         <p className="font-semibold">{u.email}</p>
-                        {u.scoutProfile && <p className="text-[11px] text-[#829087]">Vinculado: {u.scoutProfile.nombres} {u.scoutProfile.apellidos}</p>}
+                        {u.scoutProfile && <p className="text-[11px] text-faint">Vinculado: {u.scoutProfile.nombres} {u.scoutProfile.apellidos}</p>}
                       </td>
                       <td className="py-2.5 text-xs font-bold">{ROLE_LABELS[u.role]}</td>
-                      <td className="py-2.5 text-xs text-[#829087]">{u.lastLogin ? new Date(u.lastLogin).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }) : 'Nunca'}</td>
+                      <td className="py-2.5 text-xs text-faint">{u.lastLogin ? new Date(u.lastLogin).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }) : 'Nunca'}</td>
                       <td className="py-2.5 text-right">
                         {esAdmin ? (
                           <button onClick={() => void toggleActivo(u)}
-                            className={`rounded-full px-3 py-1 text-[10px] font-bold ${u.activo ? 'bg-fern text-moss' : 'bg-[#fdecea] text-clay'}`}
+                            className={`rounded-full px-3 py-1 text-[10px] font-bold ${u.activo ? 'bg-fern text-moss' : 'bg-dangersoft text-clay'}`}
                             title={u.activo ? 'Clic para desactivar' : 'Clic para activar'}>
                             {u.activo ? 'ACTIVA' : 'INACTIVA'}
                           </button>
                         ) : (
-                          <span className={`rounded-full px-3 py-1 text-[10px] font-bold ${u.activo ? 'bg-fern text-moss' : 'bg-[#fdecea] text-clay'}`}>
+                          <span className={`rounded-full px-3 py-1 text-[10px] font-bold ${u.activo ? 'bg-fern text-moss' : 'bg-dangersoft text-clay'}`}>
                             {u.activo ? 'ACTIVA' : 'INACTIVA'}
                           </span>
                         )}
@@ -122,13 +122,13 @@ export default function ConfiguracionPage() {
         )}
 
         {/* ─── Roles ─── */}
-        <section className="rounded-2xl border border-[#e2e9df] bg-white p-6 shadow-soft">
+        <section className="rounded-2xl border border-line bg-surface p-6 shadow-soft">
           <h2 className="flex items-center gap-2 font-display text-lg font-bold"><ShieldCheck size={19} className="text-moss" /> Roles y alcance</h2>
           <ul className="mt-4 space-y-2">
             {ROLES.map((role) => (
               <li key={role} className="rounded-xl bg-paper p-3">
-                <p className="flex items-center gap-2 text-sm font-bold"><UserCog size={14} className="text-[#a3b0a8]" />{ROLE_LABELS[role]}</p>
-                <p className="mt-0.5 text-xs leading-relaxed text-[#718078]">{ROLE_DESCRIPCION[role]}</p>
+                <p className="flex items-center gap-2 text-sm font-bold"><UserCog size={14} className="text-faint" />{ROLE_LABELS[role]}</p>
+                <p className="mt-0.5 text-xs leading-relaxed text-muted">{ROLE_DESCRIPCION[role]}</p>
               </li>
             ))}
           </ul>
@@ -174,25 +174,25 @@ function NuevaCuentaModal({ onClose, onCreada }: { onClose: () => void; onCreada
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/50 p-4" role="dialog" aria-modal aria-label="Nueva cuenta">
-      <form onSubmit={(e) => void submit(e)} className="w-full max-w-md space-y-4 rounded-2xl bg-white p-6 shadow-soft">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-panel/50 p-4" role="dialog" aria-modal aria-label="Nueva cuenta">
+      <form onSubmit={(e) => void submit(e)} className="w-full max-w-md space-y-4 rounded-2xl bg-surface p-6 shadow-soft">
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-bold">Nueva cuenta de acceso</h3>
-          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-[#829087] hover:bg-paper"><X size={18} /></button>
+          <button type="button" onClick={onClose} aria-label="Cerrar" className="rounded-lg p-2 text-faint hover:bg-paper"><X size={18} /></button>
         </div>
-        {error && <p className="rounded-lg bg-[#fdecea] px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
+        {error && <p className="rounded-lg bg-dangersoft px-3 py-2 text-sm font-semibold text-clay">{error}</p>}
         <input required type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="correo@ejemplo.org *"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
         <input required type="password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña temporal (mín. 8) *"
           autoComplete="new-password"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss" />
-        <label className="block text-xs font-bold text-[#5c6f63]">Rol
+          className="w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss" />
+        <label className="block text-xs font-bold text-muted">Rol
           <select value={role} onChange={(e) => setRole(e.target.value as Role)}
-            className="mt-1 w-full rounded-lg border border-[#dfe7dc] p-3 text-sm outline-none focus:border-moss">
+            className="mt-1 w-full rounded-lg border border-linestrong p-3 text-sm outline-none focus:border-moss">
             {ROLES.map((r) => <option key={r} value={r}>{ROLE_LABELS[r]}</option>)}
           </select>
         </label>
-        <p className="text-[11px] text-[#829087]">Entrega la contraseña temporal en persona; el usuario debe cambiarla en Mi perfil.</p>
+        <p className="text-[11px] text-faint">Entrega la contraseña temporal en persona; el usuario debe cambiarla en Mi perfil.</p>
         <button type="submit" disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-moss py-3 text-sm font-bold text-white disabled:opacity-60">
           {loading && <Loader2 className="animate-spin" size={16} />} Crear cuenta

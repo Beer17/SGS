@@ -70,33 +70,33 @@ export function InscribirMiembro({ eventoId, requiereAutorizacion, onInscrito }:
   }
 
   return (
-    <div className="rounded-xl border border-[#e2e9df] bg-paper p-4">
-      <p className="text-xs font-bold uppercase tracking-wide text-[#5c6f63]">Inscribir miembro</p>
+    <div className="rounded-xl border border-line bg-paper p-4">
+      <p className="text-xs font-bold uppercase tracking-wide text-muted">Inscribir miembro</p>
       <div className="relative mt-2">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#91a097]" />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-faint" />
         <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por nombre o CURP…"
           aria-label="Buscar miembro para inscribir"
-          className="w-full rounded-lg border border-[#dfe7dc] bg-white py-2.5 pl-9 pr-3 text-sm outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong bg-surface py-2.5 pl-9 pr-3 text-sm outline-none focus:border-moss" />
         {buscando && <Loader2 size={16} className="absolute right-3 top-1/2 -translate-y-1/2 animate-spin text-moss" />}
       </div>
 
-      {error && <p className="mt-2 rounded-lg bg-[#fdecea] px-3 py-2 text-xs font-semibold text-clay">{error}</p>}
+      {error && <p className="mt-2 rounded-lg bg-dangersoft px-3 py-2 text-xs font-semibold text-clay">{error}</p>}
       {mensaje && <p className="mt-2 rounded-lg bg-fern px-3 py-2 text-xs font-bold text-moss">{mensaje}</p>}
 
-      <ul className="mt-2 divide-y divide-[#e6ece4]">
+      <ul className="mt-2 divide-y divide-line">
         {results.map((m) => (
           <li key={m.id} className="flex items-center justify-between gap-2 py-2">
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">{m.nombres} {m.apellidos}</p>
-              <p className="text-[11px] text-[#829087]">{SECTION_LABELS[m.seccion]} · Grupo {m.grupo.numeroGrupo} · <span className={estatusRegistroColor(m.estatusRegistro)}>{m.estatusRegistro}</span></p>
+              <p className="text-[11px] text-faint">{SECTION_LABELS[m.seccion]} · Grupo {m.grupo.numeroGrupo} · <span className={estatusRegistroColor(m.estatusRegistro)}>{m.estatusRegistro}</span></p>
             </div>
             {confirmAuth === m.id ? (
               <div className="flex shrink-0 items-center gap-1">
-                <span className="mr-1 text-[10px] font-bold text-[#7a5a06]">¿Responsiva firmada?</span>
+                <span className="mr-1 text-[10px] font-bold text-warn">¿Responsiva firmada?</span>
                 <button onClick={() => void inscribir(m.id, true)} disabled={inscribiendo === m.id}
                   className="rounded-md bg-moss px-2 py-1.5 text-[11px] font-bold text-white">Sí</button>
                 <button onClick={() => setConfirmAuth(null)}
-                  className="rounded-md border border-[#dfe7dc] px-2 py-1.5 text-[11px] font-bold text-[#718078]">No</button>
+                  className="rounded-md border border-linestrong px-2 py-1.5 text-[11px] font-bold text-muted">No</button>
               </div>
             ) : (
               <button onClick={() => intentarInscribir(m.id)} disabled={inscribiendo === m.id}
@@ -108,7 +108,7 @@ export function InscribirMiembro({ eventoId, requiereAutorizacion, onInscrito }:
           </li>
         ))}
       </ul>
-      {buscado && results.length === 0 && <p className="mt-2 text-xs text-[#829087]">Sin resultados activos para “{q}”.</p>}
+      {buscado && results.length === 0 && <p className="mt-2 text-xs text-faint">Sin resultados activos para “{q}”.</p>}
     </div>
   );
 }

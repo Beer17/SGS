@@ -53,14 +53,14 @@ export function InsigniaGrant({ scoutId, seccion, obtainedIds }: {
     return <Loader2 className="animate-spin text-moss" size={18} aria-label="Cargando catálogo" />;
   }
   if (disponibles.length === 0) {
-    return <p className="max-w-56 text-[11px] leading-snug text-[#829087]">Tiene todas las insignias disponibles para su sección 🎉</p>;
+    return <p className="max-w-56 text-[11px] leading-snug text-faint">Tiene todas las insignias disponibles para su sección 🎉</p>;
   }
 
   return (
     <div className="flex flex-wrap items-center gap-2 print:hidden">
       <Medal size={17} className="text-[#c9a227]" aria-hidden />
       <select value={choice} onChange={(e) => setChoice(e.target.value)} aria-label="Elegir insignia para otorgar"
-        className="max-w-56 rounded-lg border border-[#dfe7dc] bg-white px-3 py-2 text-xs font-semibold outline-none focus:border-moss">
+        className="max-w-56 rounded-lg border border-linestrong bg-surface px-3 py-2 text-xs font-semibold outline-none focus:border-moss">
         <option value="">Otorgar insignia…</option>
         {disponibles.map((c) => (
           <option key={c.id} value={c.id}>{c.nombre}{c.categoria ? ` · ${c.categoria}` : ''}</option>

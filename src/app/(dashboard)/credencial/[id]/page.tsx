@@ -58,16 +58,16 @@ export default async function CredencialPage({ params }: { params: { id: string 
           />
         </div>
 
-        <div className="mt-4 flex items-start gap-3 rounded-2xl border border-[#e2e9df] bg-white p-4 text-sm print:hidden">
+        <div className="mt-4 flex items-start gap-3 rounded-2xl border border-line bg-surface p-4 text-sm print:hidden">
           {activa ? (
             <>
               <ShieldCheck className="mt-0.5 shrink-0 text-moss" size={20} />
-              <p className="text-[#3f5a4a]"><span className="font-bold">Credencial vigente.</span> Al escanear el QR se confirma que el registro está ACTIVO y coincide con la asociación.</p>
+              <p className="text-muted"><span className="font-bold">Credencial vigente.</span> Al escanear el QR se confirma que el registro está ACTIVO y coincide con la asociación.</p>
             </>
           ) : (
             <>
               <ShieldX className="mt-0.5 shrink-0 text-clay" size={20} />
-              <p className="text-[#7a4a3a]"><span className="font-bold">Credencial no vigente ({scout.estatusRegistro}).</span> La verificación pública la mostrará como no válida hasta regularizar el registro.</p>
+              <p className="text-clay"><span className="font-bold">Credencial no vigente ({scout.estatusRegistro}).</span> La verificación pública la mostrará como no válida hasta regularizar el registro.</p>
             </>
           )}
         </div>

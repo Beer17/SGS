@@ -64,7 +64,7 @@ function CensoContent() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Administración</p>
           <h1 className="mt-2 font-display text-3xl font-bold">Censo scout</h1>
-          <p className="mt-2 text-sm text-[#718078]">{total} miembros registrados en el sistema.</p>
+          <p className="mt-2 text-sm text-muted">{total} miembros registrados en el sistema.</p>
         </div>
         <Link href="/censo/nuevo"
           className="flex w-fit items-center gap-2 rounded-lg bg-moss px-4 py-2.5 text-sm font-bold text-white">
@@ -75,19 +75,19 @@ function CensoContent() {
       {/* Buscador y filtros */}
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <div className="relative w-full max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#91a097]" size={17} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-faint" size={17} />
           <input
             value={q}
             onChange={(e) => { setQ(e.target.value); setPage(1); }}
             placeholder="Buscar por nombre o CURP…"
-            className="w-full rounded-lg border border-[#dfe7dc] bg-white py-2.5 pl-10 pr-4 text-sm outline-none focus:border-moss"
+            className="w-full rounded-lg border border-linestrong bg-surface py-2.5 pl-10 pr-4 text-sm outline-none focus:border-moss"
           />
         </div>
         <select
           aria-label="Filtrar por sección"
           value={seccion}
           onChange={(e) => { setSeccion(e.target.value); setPage(1); }}
-          className="rounded-lg border border-[#dfe7dc] bg-white px-3 py-2.5 text-sm outline-none focus:border-moss"
+          className="rounded-lg border border-linestrong bg-surface px-3 py-2.5 text-sm outline-none focus:border-moss"
         >
           <option value="">Todas las secciones</option>
           {SECTIONS.map((s) => <option key={s} value={s}>{SECTION_LABELS[s]}</option>)}
@@ -96,7 +96,7 @@ function CensoContent() {
           aria-label="Filtrar por estatus"
           value={estatus}
           onChange={(e) => { setEstatus(e.target.value); setPage(1); }}
-          className="rounded-lg border border-[#dfe7dc] bg-white px-3 py-2.5 text-sm outline-none focus:border-moss"
+          className="rounded-lg border border-linestrong bg-surface px-3 py-2.5 text-sm outline-none focus:border-moss"
         >
           <option value="">Todos los estatus</option>
           <option value="ACTIVO">Activo</option>
@@ -107,17 +107,17 @@ function CensoContent() {
       </div>
 
       {/* Tabla */}
-      <div className="overflow-hidden rounded-2xl border border-[#e2e9df] bg-white shadow-soft">
+      <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-soft">
         {loading ? (
           <div className="grid min-h-64 place-items-center">
-            <div className="text-sm text-[#829087]">Cargando…</div>
+            <div className="text-sm text-faint">Cargando…</div>
           </div>
         ) : miembros.length === 0 ? (
           <div className="grid min-h-64 place-items-center">
             <div className="text-center">
               <Users className="mx-auto mb-3 text-moss" size={30} />
               <p className="font-bold">Sin resultados</p>
-              <p className="mt-1 text-sm text-[#829087]">
+              <p className="mt-1 text-sm text-faint">
                 {q ? 'Intenta con otro término de búsqueda.' : 'Agrega el primer miembro.'}
               </p>
             </div>
@@ -125,7 +125,7 @@ function CensoContent() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#edf0ea] text-left text-xs font-bold uppercase tracking-wider text-[#829087]">
+              <tr className="border-b border-line text-left text-xs font-bold uppercase tracking-wider text-faint">
                 <th className="px-5 py-3">Nombre</th>
                 <th className="hidden px-5 py-3 md:table-cell">Sección</th>
                 <th className="hidden px-5 py-3 lg:table-cell">Grupo / Provincia</th>
@@ -133,12 +133,12 @@ function CensoContent() {
                 <th className="px-5 py-3" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#f0f4ef]">
+            <tbody className="divide-y divide-line">
               {miembros.map((m) => (
                 <tr key={m.id} className="transition-colors hover:bg-paper">
                   <td className="px-5 py-3 font-semibold">{m.apellidos}, {m.nombres}</td>
-                  <td className="hidden px-5 py-3 text-[#718078] md:table-cell">{SECTION_LABELS[m.seccion]}</td>
-                  <td className="hidden px-5 py-3 text-[#718078] lg:table-cell">
+                  <td className="hidden px-5 py-3 text-muted md:table-cell">{SECTION_LABELS[m.seccion]}</td>
+                  <td className="hidden px-5 py-3 text-muted lg:table-cell">
                     Grupo {m.grupo.numeroGrupo} · {m.provincia.nombre}
                   </td>
                   <td className="px-5 py-3">
@@ -162,12 +162,12 @@ function CensoContent() {
       {pages > 1 && (
         <div className="mt-5 flex items-center justify-center gap-2">
           <button onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}
-            className="rounded-lg border border-[#dfe7dc] px-3 py-2 text-sm font-bold disabled:opacity-40">
+            className="rounded-lg border border-linestrong px-3 py-2 text-sm font-bold disabled:opacity-40">
             ← Anterior
           </button>
-          <span className="text-sm text-[#829087]">Página {page} de {pages}</span>
+          <span className="text-sm text-faint">Página {page} de {pages}</span>
           <button onClick={() => setPage((p) => Math.min(pages, p + 1))} disabled={page === pages}
-            className="rounded-lg border border-[#dfe7dc] px-3 py-2 text-sm font-bold disabled:opacity-40">
+            className="rounded-lg border border-linestrong px-3 py-2 text-sm font-bold disabled:opacity-40">
             Siguiente →
           </button>
         </div>

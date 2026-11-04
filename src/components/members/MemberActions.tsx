@@ -33,29 +33,29 @@ export function MemberActions({ scoutId, canManage }: { scoutId: string; canMana
   return (
     <div className="flex flex-wrap items-center gap-2 print:hidden">
       <Link href={`/credencial/${scoutId}`}
-        className="flex items-center gap-2 rounded-lg bg-ink px-4 py-2.5 text-sm font-bold text-white hover:opacity-90">
+        className="flex items-center gap-2 rounded-lg bg-panel px-4 py-2.5 text-sm font-bold text-white hover:opacity-90">
         <IdCard size={17} /> Credencial
       </Link>
       {canManage && (
         <Link href={`/censo/${scoutId}/editar`}
-          className="flex items-center gap-2 rounded-lg border border-[#dfe7dc] px-4 py-2.5 text-sm font-bold text-[#5c6f63] hover:bg-paper">
+          className="flex items-center gap-2 rounded-lg border border-linestrong px-4 py-2.5 text-sm font-bold text-muted hover:bg-paper">
           <Pencil size={17} /> Editar
         </Link>
       )}
       {canManage && !confirming && (
         <button onClick={() => setConfirming(true)}
-          className="flex items-center gap-2 rounded-lg border border-[#f0d9d0] px-4 py-2.5 text-sm font-bold text-clay hover:bg-[#fdf0ec]">
+          className="flex items-center gap-2 rounded-lg border border-line px-4 py-2.5 text-sm font-bold text-clay hover:bg-dangersoft">
           <UserX size={17} /> Dar de baja
         </button>
       )}
       {canManage && confirming && (
-        <div className="flex items-center gap-2 rounded-lg border border-[#f0d9d0] bg-[#fdf0ec] px-3 py-2">
+        <div className="flex items-center gap-2 rounded-lg border border-line bg-dangersoft px-3 py-2">
           <span className="text-xs font-bold text-clay">¿Dar de baja definitiva?</span>
           <button onClick={() => void darDeBaja()} disabled={loading}
             className="flex items-center gap-1 rounded-md bg-clay px-3 py-1.5 text-xs font-bold text-white disabled:opacity-60">
             {loading && <Loader2 className="animate-spin" size={13} />} Sí, dar de baja
           </button>
-          <button onClick={() => setConfirming(false)} className="rounded-md border border-[#e2c2b8] px-3 py-1.5 text-xs font-bold text-[#7a4a3a]">
+          <button onClick={() => setConfirming(false)} className="rounded-md border border-linestrong px-3 py-1.5 text-xs font-bold text-clay">
             Cancelar
           </button>
         </div>

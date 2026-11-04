@@ -117,7 +117,7 @@ export default function EventosPage() {
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Agenda</p>
           <h1 className="mt-2 font-display text-3xl font-bold">Eventos y logística</h1>
-          <p className="mt-1 text-sm text-[#718078]">Campamentos, reuniones, capacitaciones e inscripciones con cupo y autorización.</p>
+          <p className="mt-1 text-sm text-muted">Campamentos, reuniones, capacitaciones e inscripciones con cupo y autorización.</p>
         </div>
         <button onClick={() => setModalNuevo(true)}
           className="flex w-fit items-center gap-2 rounded-lg bg-moss px-4 py-2.5 text-sm font-bold text-white">
@@ -125,10 +125,10 @@ export default function EventosPage() {
         </button>
       </div>
 
-      {error && <div role="alert" className="mb-4 rounded-lg bg-[#fdecea] px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
+      {error && <div role="alert" className="mb-4 rounded-lg bg-dangersoft px-4 py-3 text-sm font-semibold text-clay">{error}</div>}
 
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-xs font-bold uppercase tracking-wide text-[#829087]">{proximos.length} próximo(s) · {pasados.length} pasado(s)/cancelado(s)</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-faint">{proximos.length} próximo(s) · {pasados.length} pasado(s)/cancelado(s)</p>
         <button onClick={() => setMostrarPasados((v) => !v)} className="text-xs font-bold text-moss">
           {mostrarPasados ? 'Solo próximos' : 'Incluir pasados/cancelados'}
         </button>
@@ -137,10 +137,10 @@ export default function EventosPage() {
       {loading ? (
         <div className="grid min-h-48 place-items-center"><Loader2 className="animate-spin text-moss" /></div>
       ) : visibles.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[#cbd8ca] bg-white p-12 text-center">
+        <div className="rounded-2xl border border-dashed border-line bg-surface p-12 text-center">
           <Tent className="mx-auto mb-3 text-moss" size={30} />
           <p className="font-bold">No hay eventos próximos</p>
-          <p className="mt-1 text-sm text-[#829087]">Crea el primero con el botón “Nuevo evento”.</p>
+          <p className="mt-1 text-sm text-faint">Crea el primero con el botón “Nuevo evento”.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -148,7 +148,7 @@ export default function EventosPage() {
             const abierto = expandido === ev.id;
             const inicio = new Date(ev.fechaInicio);
             return (
-              <article key={ev.id} className={`overflow-hidden rounded-2xl border bg-white shadow-soft ${ev.cancelado ? 'border-[#f0d9d0] opacity-75' : 'border-[#e2e9df]'}`}>
+              <article key={ev.id} className={`overflow-hidden rounded-2xl border bg-surface shadow-soft ${ev.cancelado ? 'border-line opacity-75' : 'border-line'}`}>
                 {/* Fila principal */}
                 <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center">
                   <div className="flex w-16 shrink-0 flex-col items-center rounded-xl bg-paper py-3">
@@ -156,26 +156,26 @@ export default function EventosPage() {
                     <span className="mt-1 text-[10px] font-bold uppercase tracking-widest text-clay">
                       {inicio.toLocaleString('es-MX', { month: 'short' })}
                     </span>
-                    <span className="text-[10px] font-semibold text-[#829087]">{inicio.getFullYear()}</span>
+                    <span className="text-[10px] font-semibold text-faint">{inicio.getFullYear()}</span>
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="font-display text-lg font-bold leading-snug">{ev.nombre}</h2>
                       <span className="rounded-full bg-fern px-2.5 py-0.5 text-[10px] font-bold uppercase text-moss">{TIPO_EVENTO_LABELS[ev.tipo]}</span>
-                      {ev.cancelado && <span className="rounded-full bg-[#fdecea] px-2.5 py-0.5 text-[10px] font-bold uppercase text-clay">Cancelado</span>}
-                      {ev.requiereAutorizacion && <span className="rounded-full bg-[#fff5d9] px-2.5 py-0.5 text-[10px] font-bold uppercase text-[#a9790a]">Responsiva</span>}
+                      {ev.cancelado && <span className="rounded-full bg-dangersoft px-2.5 py-0.5 text-[10px] font-bold uppercase text-clay">Cancelado</span>}
+                      {ev.requiereAutorizacion && <span className="rounded-full bg-warnsoft px-2.5 py-0.5 text-[10px] font-bold uppercase text-warn">Responsiva</span>}
                     </div>
-                    <p className="mt-1 text-xs text-[#718078]">
+                    <p className="mt-1 text-xs text-muted">
                       {ev.lugar && <span className="mr-3 inline-flex items-center gap-1"><MapPin size={12} />{ev.lugar}</span>}
                       {ev.grupo ? `Grupo ${ev.grupo.numeroGrupo}` : 'Nacional / abierto'}
                       {' · '}{new Date(ev.fechaInicio).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' })} → {new Date(ev.fechaFin).toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' })}
                     </p>
-                    <p className="mt-1 text-xs font-semibold text-[#5c6f63]">
+                    <p className="mt-1 text-xs font-semibold text-muted">
                       <Users size={12} className="mr-1 inline" />{ev._count.inscripciones}{ev.cupoMaximo ? `/${ev.cupoMaximo}` : ''} inscritos · {ev._count.asistencias} asistencias
                     </p>
                   </div>
                   <button onClick={() => void abrirDetalle(ev.id)}
-                    className="flex shrink-0 items-center gap-1 rounded-lg border border-[#dfe7dc] px-3 py-2 text-xs font-bold text-moss"
+                    className="flex shrink-0 items-center gap-1 rounded-lg border border-linestrong px-3 py-2 text-xs font-bold text-moss"
                     aria-expanded={abierto}>
                     Gestionar {abierto ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                   </button>
@@ -183,27 +183,27 @@ export default function EventosPage() {
 
                 {/* Panel de gestión */}
                 {abierto && (
-                  <div className="border-t border-[#edf0ea] bg-paper/40 p-5">
+                  <div className="border-t border-line bg-paper/40 p-5">
                     {cargandoDetalle || !detalle || detalle.id !== ev.id ? (
                       <div className="grid min-h-24 place-items-center"><Loader2 className="animate-spin text-moss" /></div>
                     ) : (
                       <div className="grid gap-4 lg:grid-cols-2">
                         <div className="space-y-4">
                           {/* Autorizaciones y asistencia */}
-                          <div className="rounded-xl border border-[#e2e9df] bg-white p-4">
+                          <div className="rounded-xl border border-line bg-surface p-4">
                             <div className="flex flex-wrap items-center justify-between gap-2">
-                              <p className="text-xs font-bold uppercase tracking-wide text-[#5c6f63]">Asistencia</p>
+                              <p className="text-xs font-bold uppercase tracking-wide text-muted">Asistencia</p>
                               <div className="flex gap-2">
                                 <a href={`/api/eventos/${ev.id}/asistencia?format=csv`}
-                                  className="flex items-center gap-1 rounded-lg border border-[#dfe7dc] px-3 py-1.5 text-[11px] font-bold text-[#5c6f63] hover:bg-paper">
+                                  className="flex items-center gap-1 rounded-lg border border-linestrong px-3 py-1.5 text-[11px] font-bold text-muted hover:bg-paper">
                                   <Download size={12} /> CSV
                                 </a>
                                 <a href={`/api/eventos/${ev.id}/asistencia?format=pdf`} target="_blank" rel="noopener"
-                                  className="flex items-center gap-1 rounded-lg border border-[#dfe7dc] px-3 py-1.5 text-[11px] font-bold text-[#5c6f63] hover:bg-paper">
+                                  className="flex items-center gap-1 rounded-lg border border-linestrong px-3 py-1.5 text-[11px] font-bold text-muted hover:bg-paper">
                                   <FileText size={12} /> PDF
                                 </a>
                                 <Link href="/eventos/escaner"
-                                  className="flex items-center gap-1 rounded-lg bg-ink px-3 py-1.5 text-[11px] font-bold text-white">
+                                  className="flex items-center gap-1 rounded-lg bg-panel px-3 py-1.5 text-[11px] font-bold text-white">
                                   Escáner
                                 </Link>
                               </div>
@@ -218,9 +218,9 @@ export default function EventosPage() {
 
                           {/* Lista de inscritos */}
                           {detalle.inscripciones.length > 0 && (
-                            <div className="rounded-xl border border-[#e2e9df] bg-white p-4">
-                              <p className="text-xs font-bold uppercase tracking-wide text-[#5c6f63]">Inscritos ({detalle.inscripciones.length}{detalle.cupoDisponible != null ? ` · quedan ${detalle.cupoDisponible} lugares` : ''})</p>
-                              <ul className="mt-2 max-h-56 divide-y divide-[#f0f4ef] overflow-y-auto text-sm">
+                            <div className="rounded-xl border border-line bg-surface p-4">
+                              <p className="text-xs font-bold uppercase tracking-wide text-muted">Inscritos ({detalle.inscripciones.length}{detalle.cupoDisponible != null ? ` · quedan ${detalle.cupoDisponible} lugares` : ''})</p>
+                              <ul className="mt-2 max-h-56 divide-y divide-line overflow-y-auto text-sm">
                                 {detalle.inscripciones.map((i) => (
                                   <li key={i.id} className="flex items-center justify-between gap-2 py-2">
                                     <span className="min-w-0 truncate">{i.scoutProfile.apellidos}, {i.scoutProfile.nombres}</span>
@@ -228,11 +228,11 @@ export default function EventosPage() {
                                       {ev.requiereAutorizacion && (
                                         i.autorizacionParental
                                           ? <span className="rounded bg-fern px-1.5 py-0.5 text-moss">Responsiva ✓</span>
-                                          : <span className="rounded bg-[#fdecea] px-1.5 py-0.5 text-clay">Sin firma</span>
+                                          : <span className="rounded bg-dangersoft px-1.5 py-0.5 text-clay">Sin firma</span>
                                       )}
                                       {i.pagoCuota
                                         ? <span className="rounded bg-fern px-1.5 py-0.5 text-moss">Pagó</span>
-                                        : <span className="rounded bg-[#fff5d9] px-1.5 py-0.5 text-[#a9790a]">Adeudo</span>}
+                                        : <span className="rounded bg-warnsoft px-1.5 py-0.5 text-warn">Adeudo</span>}
                                     </span>
                                   </li>
                                 ))}
@@ -247,7 +247,7 @@ export default function EventosPage() {
 
                           {!ev.cancelado && (
                             <button onClick={() => void cancelarEvento(ev.id)} disabled={cancelando === ev.id}
-                              className="flex items-center gap-2 rounded-lg border border-[#f0d9d0] px-4 py-2.5 text-xs font-bold text-clay hover:bg-[#fdf0ec] disabled:opacity-60">
+                              className="flex items-center gap-2 rounded-lg border border-line px-4 py-2.5 text-xs font-bold text-clay hover:bg-dangersoft disabled:opacity-60">
                               {cancelando === ev.id ? <Loader2 className="animate-spin" size={14} /> : <Ban size={14} />} Cancelar evento
                             </button>
                           )}
@@ -306,20 +306,20 @@ function LogisticaPanel({ eventoId, logistica }: {
 
   if (!editando) {
     return (
-      <div className="rounded-xl border border-[#e2e9df] bg-white p-4">
+      <div className="rounded-xl border border-line bg-surface p-4">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#5c6f63]">Logística y transporte</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-muted">Logística y transporte</p>
           <button onClick={() => setEditando(true)} className="text-xs font-bold text-moss">{logistica ? 'Editar' : 'Completar'}</button>
         </div>
         {!logistica ? (
-          <p className="mt-2 text-sm text-[#829087]">Sin información logística. Agrega transporte, lugar y equipo requerido.</p>
+          <p className="mt-2 text-sm text-faint">Sin información logística. Agrega transporte, lugar y equipo requerido.</p>
         ) : (
           <dl className="mt-3 space-y-2 text-sm">
-            {logistica.transporteInfo && <div><dt className="text-[10px] font-bold uppercase text-[#a3b0a8]">Transporte</dt><dd>{logistica.transporteInfo}</dd></div>}
-            {logistica.lugarCampamento && <div><dt className="text-[10px] font-bold uppercase text-[#a3b0a8]">Campamento</dt><dd>{logistica.lugarCampamento}</dd></div>}
-            {logistica.equipoRequerido && <div><dt className="text-[10px] font-bold uppercase text-[#a3b0a8]">Equipo requerido</dt><dd className="font-mono text-xs">{logistica.equipoRequerido}</dd></div>}
-            {logistica.presupuesto && <div><dt className="text-[10px] font-bold uppercase text-[#a3b0a8]">Presupuesto</dt><dd>${Number(logistica.presupuesto).toLocaleString('es-MX')}</dd></div>}
-            {logistica.notas && <div><dt className="text-[10px] font-bold uppercase text-[#a3b0a8]">Notas</dt><dd className="text-[#5c6f63]">{logistica.notas}</dd></div>}
+            {logistica.transporteInfo && <div><dt className="text-[10px] font-bold uppercase text-faint">Transporte</dt><dd>{logistica.transporteInfo}</dd></div>}
+            {logistica.lugarCampamento && <div><dt className="text-[10px] font-bold uppercase text-faint">Campamento</dt><dd>{logistica.lugarCampamento}</dd></div>}
+            {logistica.equipoRequerido && <div><dt className="text-[10px] font-bold uppercase text-faint">Equipo requerido</dt><dd className="font-mono text-xs">{logistica.equipoRequerido}</dd></div>}
+            {logistica.presupuesto && <div><dt className="text-[10px] font-bold uppercase text-faint">Presupuesto</dt><dd>${Number(logistica.presupuesto).toLocaleString('es-MX')}</dd></div>}
+            {logistica.notas && <div><dt className="text-[10px] font-bold uppercase text-faint">Notas</dt><dd className="text-muted">{logistica.notas}</dd></div>}
           </dl>
         )}
       </div>
@@ -327,23 +327,23 @@ function LogisticaPanel({ eventoId, logistica }: {
   }
 
   return (
-    <form onSubmit={(e) => void guardar(e)} className="rounded-xl border border-[#e2e9df] bg-white p-4">
+    <form onSubmit={(e) => void guardar(e)} className="rounded-xl border border-line bg-surface p-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-bold uppercase tracking-wide text-[#5c6f63]">Editar logística</p>
-        <button type="button" onClick={() => setEditando(false)} aria-label="Cerrar" className="rounded-lg p-1.5 text-[#829087] hover:bg-paper"><X size={16} /></button>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted">Editar logística</p>
+        <button type="button" onClick={() => setEditando(false)} aria-label="Cerrar" className="rounded-lg p-1.5 text-faint hover:bg-paper"><X size={16} /></button>
       </div>
-      {error && <p className="mt-2 rounded-lg bg-[#fdecea] px-3 py-2 text-xs font-semibold text-clay">{error}</p>}
+      {error && <p className="mt-2 rounded-lg bg-dangersoft px-3 py-2 text-xs font-semibold text-clay">{error}</p>}
       <div className="mt-3 space-y-3 text-sm">
         <textarea value={transporteInfo} onChange={(e) => setTransporteInfo(e.target.value)} rows={2} placeholder="Transporte (autobuses, salidas, costos)…"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 outline-none focus:border-moss" />
         <input value={lugarCampamento} onChange={(e) => setLugarCampamento(e.target.value)} placeholder="Lugar de campamento"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 outline-none focus:border-moss" />
         <textarea value={equipoRequerido} onChange={(e) => setEquipoRequerido(e.target.value)} rows={2} placeholder='Equipo requerido (ej. ["Sleeping","Botiquín"])'
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 font-mono text-xs outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 font-mono text-xs outline-none focus:border-moss" />
         <input type="number" min="0" step="0.01" value={presupuesto} onChange={(e) => setPresupuesto(e.target.value)} placeholder="Presupuesto MXN"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 outline-none focus:border-moss" />
         <textarea value={notas} onChange={(e) => setNotas(e.target.value)} rows={2} placeholder="Notas internas…"
-          className="w-full rounded-lg border border-[#dfe7dc] p-3 outline-none focus:border-moss" />
+          className="w-full rounded-lg border border-linestrong p-3 outline-none focus:border-moss" />
         <button type="submit" disabled={loading}
           className="flex w-full items-center justify-center gap-2 rounded-lg bg-moss py-2.5 text-sm font-bold text-white disabled:opacity-60">
           {loading && <Loader2 className="animate-spin" size={15} />} Guardar logística

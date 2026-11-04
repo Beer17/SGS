@@ -11,7 +11,7 @@ export default function EditarMiembroPage({ params }: { params: { id: string } }
       </Link>
       <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Administración</p>
       <h1 className="mt-2 font-display text-3xl font-bold">Editar miembro</h1>
-      <p className="mt-2 mb-8 max-w-xl text-sm text-[#718078]">
+      <p className="mt-2 mb-8 max-w-xl text-sm text-muted">
         Actualiza los datos del expediente. Los cambios quedan registrados en la bitácora.
       </p>
       <MemberForm mode="edit" scoutId={params.id} />

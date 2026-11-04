@@ -41,7 +41,7 @@ export default async function SeccionesPage() {
       <div className="mb-8">
         <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Organización</p>
         <h1 className="mt-2 font-display text-3xl font-bold">Secciones</h1>
-        <p className="mt-1 text-sm text-[#718078]">Miembros registrados por sección en este momento.</p>
+        <p className="mt-1 text-sm text-muted">Miembros registrados por sección en este momento.</p>
       </div>
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {SECTIONS.map((section) => {
@@ -49,15 +49,15 @@ export default async function SeccionesPage() {
           const total = countMap.get(section) ?? 0;
           return (
             <Link href={`/secciones/${section.toLowerCase()}`} key={section}
-              className="rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft transition-transform hover:-translate-y-0.5">
+              className="rounded-2xl border border-line bg-surface p-5 shadow-soft transition-transform hover:-translate-y-0.5">
               <div className="flex items-start justify-between">
                 <span className={`grid h-11 w-11 place-items-center rounded-xl ${COLORS[section]}`}><Icon size={21} /></span>
-                <ArrowUpRight size={17} className="text-[#829087]" />
+                <ArrowUpRight size={17} className="text-faint" />
               </div>
               <h2 className="mt-5 font-display text-xl font-bold">{SECTION_LABELS[section]}</h2>
-              <p className="mt-0.5 text-sm text-[#718078]">{SECTION_AGES[section]}</p>
+              <p className="mt-0.5 text-sm text-muted">{SECTION_AGES[section]}</p>
               <div className="mt-5 text-3xl font-bold">{total}</div>
-              <div className="text-xs font-semibold text-[#829087]">miembro(s) registrado(s)</div>
+              <div className="text-xs font-semibold text-faint">miembro(s) registrado(s)</div>
             </Link>
           );
         })}

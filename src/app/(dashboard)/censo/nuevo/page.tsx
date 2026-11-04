@@ -11,7 +11,7 @@ export default function NuevoMiembroPage() {
       </Link>
       <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Administración</p>
       <h1 className="mt-2 font-display text-3xl font-bold">Registrar miembro</h1>
-      <p className="mt-2 mb-8 max-w-xl text-sm text-[#718078]">
+      <p className="mt-2 mb-8 max-w-xl text-sm text-muted">
         Alta de jóvenes y adultos en el censo. El registro queda como PENDIENTE hasta que jefatura valide la documentación.
       </p>
       <MemberForm mode="create" />

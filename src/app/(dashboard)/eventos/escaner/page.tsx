@@ -236,20 +236,20 @@ export default function ScannerPage() {
       <div className="mb-6">
         <p className="text-xs font-bold uppercase tracking-[.2em] text-clay">Operación en campo</p>
         <h1 className="mt-2 font-display text-3xl font-bold">Escáner de asistencia</h1>
-        <p className="mt-1 text-sm text-[#718078]">
+        <p className="mt-1 text-sm text-muted">
           Escanea el QR de la credencial. Si no hay red, las lecturas se guardan en este dispositivo y se sincronizan al volver la conexión.
         </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
         {/* ─── Visor de cámara ─── */}
-        <div className="rounded-2xl bg-ink p-4 text-white sm:p-6">
+        <div className="rounded-2xl bg-panel p-4 text-white sm:p-6">
           {/* Selector de evento */}
           <label className="block text-[10px] font-bold uppercase tracking-widest text-[#8fb59e]">Evento a registrar</label>
           <div className="relative mt-1.5">
             <select value={eventId} onChange={(e) => setEventId(e.target.value)}
               aria-label="Evento"
-              className="w-full appearance-none rounded-lg border border-white/15 bg-white/10 py-3 pl-4 pr-10 text-sm font-semibold text-white outline-none focus:border-citrus">
+              className="w-full appearance-none rounded-lg border border-white/15 bg-surface/10 py-3 pl-4 pr-10 text-sm font-semibold text-white outline-none focus:border-citrus">
               {eventos.length === 0 && <option value="">Sin eventos próximos</option>}
               {eventos.map((e) => (
                 <option key={e.id} value={e.id} className="text-ink">
@@ -273,7 +273,7 @@ export default function ScannerPage() {
 
             {camara === 'idle' && (
               <button onClick={() => void iniciarCamara()}
-                className="absolute inset-0 grid place-items-center bg-white/5 text-center transition-colors hover:bg-white/10">
+                className="absolute inset-0 grid place-items-center bg-surface/5 text-center transition-colors hover:bg-surface/10">
                 <span>
                   <Camera size={44} className="mx-auto text-citrus" />
                   <span className="mt-3 block text-sm font-bold text-[#e7f1e8]">Tocar para activar la cámara</span>
@@ -300,7 +300,7 @@ export default function ScannerPage() {
                 <div>
                   <XCircle className="mx-auto text-clay" size={36} />
                   <p className="mt-3 text-sm font-semibold text-[#f5c8bc]">{camaraError}</p>
-                  <button onClick={() => void iniciarCamara()} className="mt-4 rounded-lg bg-white/10 px-4 py-2 text-xs font-bold hover:bg-white/20">Reintentar</button>
+                  <button onClick={() => void iniciarCamara()} className="mt-4 rounded-lg bg-surface/10 px-4 py-2 text-xs font-bold hover:bg-surface/20">Reintentar</button>
                 </div>
               </div>
             )}
@@ -313,7 +313,7 @@ export default function ScannerPage() {
             <input value={manualCode} onChange={(e) => setManualCode(e.target.value)}
               placeholder="…o escribe/pega el código de la credencial"
               aria-label="Código manual"
-              className="w-full rounded-lg border border-white/15 bg-white/10 px-3 py-2.5 font-mono text-xs text-white placeholder-[#7d9184] outline-none focus:border-citrus" />
+              className="w-full rounded-lg border border-white/15 bg-surface/10 px-3 py-2.5 font-mono text-xs text-white placeholder-faint outline-none focus:border-citrus" />
             <button type="submit" className="shrink-0 rounded-lg bg-citrus px-4 py-2.5 text-xs font-bold text-ink">Registrar</button>
           </form>
 
@@ -323,7 +323,7 @@ export default function ScannerPage() {
               className={`mt-4 flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold ${
                 mensaje.tipo === 'ok' ? 'bg-[#16352a] text-[#7ee2b0]'
                 : mensaje.tipo === 'error' ? 'bg-[#3a1f1a] text-[#ffb3a3]'
-                : 'bg-white/10 text-[#d4e6d7]'}`}>
+                : 'bg-surface/10 text-[#d4e6d7]'}`}>
               {mensaje.tipo === 'ok' ? <CheckCircle2 size={17} /> : mensaje.tipo === 'error' ? <XCircle size={17} /> : <CloudOff size={17} />}
               {mensaje.texto}
             </div>
@@ -333,14 +333,14 @@ export default function ScannerPage() {
         {/* ─── Estado y cola ─── */}
         <div className="space-y-4">
           {/* Conectividad */}
-          <div className="flex items-center justify-between rounded-2xl border border-[#e2e9df] bg-white p-4 shadow-soft">
+          <div className="flex items-center justify-between rounded-2xl border border-line bg-surface p-4 shadow-soft">
             <div className="flex items-center gap-3">
-              <div className={`grid h-11 w-11 place-items-center rounded-xl ${isOnline ? 'bg-fern text-moss' : 'bg-[#fff5d9] text-[#a9790a]'}`}>
+              <div className={`grid h-11 w-11 place-items-center rounded-xl ${isOnline ? 'bg-fern text-moss' : 'bg-warnsoft text-warn'}`}>
                 {isOnline ? <Cloud size={20} /> : <CloudOff size={20} />}
               </div>
               <div>
                 <p className="text-sm font-bold">{isOnline ? 'En línea' : 'Modo offline'}</p>
-                <p className="text-[11px] text-[#829087]">{isOnline ? 'Las lecturas se envían al instante.' : 'Las lecturas se guardan en el dispositivo.'}</p>
+                <p className="text-[11px] text-faint">{isOnline ? 'Las lecturas se envían al instante.' : 'Las lecturas se guardan en el dispositivo.'}</p>
               </div>
             </div>
             {pending.length > 0 && (
@@ -352,31 +352,31 @@ export default function ScannerPage() {
           </div>
 
           {/* Cola pendiente */}
-          <div className="rounded-2xl border border-[#e2e9df] bg-white p-5 shadow-soft">
+          <div className="rounded-2xl border border-line bg-surface p-5 shadow-soft">
             <div className="flex items-center justify-between">
               <h2 className="flex items-center gap-2 font-display font-bold"><QrCode size={18} className="text-moss" /> Cola de sincronización</h2>
               {pending.length > 0 && (
                 <button onClick={() => { if (window.confirm('¿Descartar las lecturas pendientes? Esta acción no se puede deshacer.')) persistPending([]); }}
-                  className="rounded-lg p-2 text-[#c96b4b] hover:bg-[#fdf0ec]" aria-label="Descartar cola">
+                  className="rounded-lg p-2 text-clay hover:bg-dangersoft" aria-label="Descartar cola">
                   <Trash2 size={17} />
                 </button>
               )}
             </div>
-            <p className="mt-1 text-xs text-[#829087]">{pending.length} lectura(s) pendiente(s) de sincronizar.</p>
+            <p className="mt-1 text-xs text-faint">{pending.length} lectura(s) pendiente(s) de sincronizar.</p>
             <ul className="mt-3 max-h-72 space-y-2 overflow-y-auto">
-              {pending.length === 0 && <li className="rounded-lg bg-paper p-3 text-center text-xs text-[#829087]">Todo sincronizado 🎉</li>}
+              {pending.length === 0 && <li className="rounded-lg bg-paper p-3 text-center text-xs text-faint">Todo sincronizado 🎉</li>}
               {pending.map((r) => (
-                <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg border border-[#edf0ea] px-3 py-2 text-xs">
+                <li key={r.id} className="flex items-center justify-between gap-2 rounded-lg border border-line px-3 py-2 text-xs">
                   <span className="truncate font-mono">{r.credentialCode.slice(0, 18)}…</span>
-                  <span className="shrink-0 text-[#829087]">{new Date(r.scannedAt).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}</span>
+                  <span className="shrink-0 text-faint">{new Date(r.scannedAt).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Instrucciones de campo */}
-          <div className="rounded-2xl bg-paper p-5 text-xs leading-relaxed text-[#5c6f63]">
-            <p className="font-bold uppercase tracking-wide text-[#40544a]">Checklist de campo</p>
+          <div className="rounded-2xl bg-paper p-5 text-xs leading-relaxed text-muted">
+            <p className="font-bold uppercase tracking-wide text-moss">Checklist de campo</p>
             <ol className="mt-2 list-decimal space-y-1 pl-4">
               <li>Selecciona el evento correcto arriba.</li>
               <li>Activa la cámara y apunta al QR de la credencial.</li>

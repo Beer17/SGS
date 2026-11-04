@@ -38,28 +38,28 @@ export function calcularEdad(fechaNacimiento: Date | string): number {
 export function estatusCuotaColor(estatus: EstatusCuota): string {
   return {
     PAGADA:   'bg-fern text-moss',
-    PENDIENTE:'bg-[#fff5d9] text-[#a9790a]',
-    VENCIDA:  'bg-[#fdecea] text-clay',
-    EXENTA:   'bg-[#e8e8f0] text-[#5a5a7a]',
+    PENDIENTE:'bg-warnsoft text-warn',
+    VENCIDA:  'bg-dangersoft text-clay',
+    EXENTA:   'bg-neutralsoft text-neutral',
   }[estatus];
 }
 
 export function estatusRegistroColor(estatus: RegistroStatus): string {
   return {
     ACTIVO:   'bg-fern text-moss',
-    PENDIENTE:'bg-[#fff5d9] text-[#a9790a]',
-    VENCIDO:  'bg-[#fdecea] text-clay',
-    BAJA:     'bg-[#e8e8f0] text-[#5a5a7a]',
+    PENDIENTE:'bg-warnsoft text-warn',
+    VENCIDO:  'bg-dangersoft text-clay',
+    BAJA:     'bg-neutralsoft text-neutral',
   }[estatus];
 }
 
 export function estadoItemColor(estado: EstadoItem): string {
   return {
     DISPONIBLE:    'bg-fern text-moss',
-    PRESTADO:      'bg-[#fff5d9] text-[#a9790a]',
-    MANTENIMIENTO: 'bg-[#e8f0ff] text-[#3a5aa8]',
-    DANADO:        'bg-[#fdecea] text-clay',
-    BAJA:          'bg-[#e8e8f0] text-[#5a5a7a]',
+    PRESTADO:      'bg-warnsoft text-warn',
+    MANTENIMIENTO: 'bg-infosoft text-info',
+    DANADO:        'bg-dangersoft text-clay',
+    BAJA:          'bg-neutralsoft text-neutral',
   }[estado];
 }
 
