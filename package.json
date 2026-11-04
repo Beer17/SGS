@@ -20,7 +20,6 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@next/swc-win32-x64-msvc": "^14.2.33",
     "@prisma/client": "^5.22.0",
     "@react-pdf/renderer": "^4.9.0",
     "bcryptjs": "^3.0.3",
